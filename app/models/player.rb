@@ -23,6 +23,7 @@ class Player
   field :wiki_team, type: String
 
   validates_length_of :short_name, minimum: 2, maximum: 4
+  validates_presence_of :long_name
   validates_uniqueness_of :long_name
 
   def name
