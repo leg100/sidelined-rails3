@@ -6,9 +6,13 @@ gem 'mongoid-history'
 gem 'slim-rails'
 gem 'devise'
 
+group :development do
+  gem 'wirble'
+end
+
 group :development, :test do
- gem "rspec-rails"
- gem "factory_girl_rails"
+  gem "rspec-rails"
+  gem "factory_girl_rails"
 end
 
 group :test do
