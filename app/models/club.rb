@@ -12,6 +12,8 @@ class Club
                   :track_destroy  =>  false
 
   has_many :players
+  has_many :home_fixtures, class_name: 'FixtureEvent', inverse_of: :home_club
+  has_many :away_fixtures, class_name: 'FixtureEvent', inverse_of: :away_club
 
   field :long_name, type: String
   field :short_name, type: String
