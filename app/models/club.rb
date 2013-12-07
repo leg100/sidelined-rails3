@@ -12,11 +12,15 @@ class Club
                   :track_destroy  =>  false
 
   has_many :players
-  has_many :home_fixtures, class_name: 'FixtureEvent', inverse_of: :home_club
-  has_many :away_fixtures, class_name: 'FixtureEvent', inverse_of: :away_club
+  has_many :home_fixtures, class_name: 'Fixture', inverse_of: :home_club
+  has_many :away_fixtures, class_name: 'Fixture', inverse_of: :away_club
 
   field :long_name, type: String
   field :short_name, type: String
   
   alias :name :short_name
+
+  def fixtures
+    home_fixtures + away_fixtures 
+  end
 end
