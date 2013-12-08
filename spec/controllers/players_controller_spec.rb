@@ -5,13 +5,13 @@ describe PlayersController do
     describe "GET #show" do
       it "assigns the requested player to @player" do
         player = create(:player)
-        get :show
+        get :show, id: player
         expect(assigns(:player)).to eq player
       end
 
       it "renders the :show view" do
         player = create(:player)
-        get :show
+        get :show, id: player
         expect(response).to render_template :show
       end
     end
@@ -26,6 +26,14 @@ describe PlayersController do
       it "renders the :index view" do
         get :index
         expect(response).to render_template :index
+      end
+    end
+
+    describe "POST #search" do
+      it "redirects to players#show" do
+        player = create(:player)
+        post :search, { slug: player.long_name.parameterize.gsub(/ /, '-') }
+        expect(response).to redirect_to player_path(assigns[:player])
       end
     end
   end

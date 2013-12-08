@@ -72,6 +72,8 @@ GEM
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
+    jquery-ui-rails (4.1.0)
+      railties (>= 3.1.0)
     json (1.8.1)
     launchy (2.4.2)
       addressable (~> 2.3)
@@ -121,6 +123,8 @@ GEM
       activesupport (= 3.2.15)
       bundler (~> 1.0)
       railties (= 3.2.15)
+    rails3-jquery-autocomplete (1.0.11)
+      rails (~> 3.0)
     railties (3.2.15)
       actionpack (= 3.2.15)
       activesupport (= 3.2.15)
@@ -195,11 +199,13 @@ DEPENDENCIES
   faker
   guard-rspec
   jquery-rails
+  jquery-ui-rails
   launchy
   mongoid
   mongoid-history
   mongoid_slug
   rails (= 3.2.15)
+  rails3-jquery-autocomplete
   rspec-rails
   selenium-webdriver
   slim-rails

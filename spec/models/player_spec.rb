@@ -1,5 +1,10 @@
 require 'spec_helper.rb'
 describe Player do
+  it "creates a slug" do
+    player = create(:player)
+    expect(player.slug).to eq player.long_name.parameterize.gsub(/ /, '-')
+  end
+
   it "is versioned" do
     player = create(:player)
     player.forename = "Bob"

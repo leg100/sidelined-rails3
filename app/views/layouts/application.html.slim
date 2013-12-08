@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    title SidelinedRails3
+    = (stylesheet_link_tag    "application", :media => "all")
+    = (javascript_include_tag "application") 
+    = (csrf_meta_tags) 
+  body
+
+    = form_tag search_players_path
+    = (hidden_field_tag 'slug', '', :id => 'slug_value')
+    = (autocomplete_field_tag 'name', '', autocomplete_player_name_players_path, :update_elements => {:slug => '#slug_value'})
+    = submit_tag "Show Player"
+      
+    == yield

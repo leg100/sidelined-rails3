@@ -7,6 +7,8 @@ gem 'slim-rails'
 gem 'devise'
 gem 'jquery-rails'
 gem 'mongoid_slug'
+gem 'rails3-jquery-autocomplete'
+gem 'jquery-ui-rails'
 
 group :development, :test do
   gem "rspec-rails"

@@ -2,7 +2,12 @@ SidelinedRails3::Application.routes.draw do
   # The priority is based upon order of creation:
   # first created -> highest priority.
   #
-  resources :players
+  resources :players do
+    collection do
+      get :autocomplete_player_name
+      post :search
+    end
+  end
   resources :clubs
   resources :events
 
