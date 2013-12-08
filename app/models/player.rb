@@ -2,6 +2,7 @@ class Player
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::History::Trackable
+  include Mongoid::Slug
 
   belongs_to :club
   accepts_nested_attributes_for :club
@@ -21,12 +22,13 @@ class Player
   field :forenames, type: Array
   field :surnames, type: Array
   field :wiki_team, type: String
+  slug :long_name, history: true
 
   validates_length_of :short_name, minimum: 2, maximum: 4
   validates_presence_of :long_name
   validates_uniqueness_of :long_name
 
-  def name
-    @name ||= ::PlayerName.new(title)
+  def as_json(options={})
+    super(options.merge(:include => [:club]))
   end
 end

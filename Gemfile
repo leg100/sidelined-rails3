@@ -5,6 +5,8 @@ gem 'mongoid'
 gem 'mongoid-history'
 gem 'slim-rails'
 gem 'devise'
+gem 'jquery-rails'
+gem 'mongoid_slug'
 
 group :development, :test do
   gem "rspec-rails"
