@@ -20,6 +20,10 @@ class Fixture < Event
 
   field :datetime, type: DateTime
 
+  validates_presence_of :home_club
+  validates_presence_of :away_club
+  validates_presence_of :datetime
+
   def clubs
     home_club + away_club
   end

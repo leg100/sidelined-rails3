@@ -8,6 +8,11 @@ html
   body
     p.notice = notice
     p.alert = alert
+    
+    - if user_signed_in?
+      li = link_to('Logout', destroy_user_session_path, :method => :delete)
+    - else
+      li = link_to('Login', new_user_session_path) 
 
     = form_tag search_players_path
       = (hidden_field_tag 'slug', '', :id => 'slug_value')
