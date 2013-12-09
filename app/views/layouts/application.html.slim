@@ -6,10 +6,12 @@ html
     = (javascript_include_tag "application") 
     = (csrf_meta_tags) 
   body
+    p.notice = notice
+    p.alert = alert
 
     = form_tag search_players_path
-    = (hidden_field_tag 'slug', '', :id => 'slug_value')
-    = (autocomplete_field_tag 'name', '', autocomplete_player_name_players_path, :update_elements => {:slug => '#slug_value'})
-    = submit_tag "Show Player"
-      
+      = (hidden_field_tag 'slug', '', :id => 'slug_value')
+      = (autocomplete_field_tag 'name', '', autocomplete_player_name_players_path, :update_elements => {:slug => '#slug_value'})
+      = submit_tag "Show Player"
+        
     == yield
