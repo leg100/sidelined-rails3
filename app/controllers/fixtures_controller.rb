@@ -42,7 +42,8 @@ class FixturesController < ApplicationController
   # POST /fixtures
   # POST /fixtures.json
   def create
-    @fixture = Fixture.new(params[:fixture])
+    # workaround for https://github.com/aq1018/mongoid-history/issues/26
+    @fixture = Fixture.new(params[:fixture].merge(modifier: current_user))
 
     respond_to do |format|
       if @fixture.save
