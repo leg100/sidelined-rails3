@@ -10,6 +10,7 @@ SidelinedRails3::Application.routes.draw do
   end
   resources :clubs
   resources :events
+  resources :fixtures
 
   devise_for :users
   # Sample of regular route:
