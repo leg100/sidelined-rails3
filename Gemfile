@@ -21,7 +21,7 @@ group :development do
 end
 
 group :test do
-  gem "faker"
+  gem "faker", github: 'stympy/faker'
   gem "database_cleaner"
   gem "launchy"
   gem "selenium-webdriver"

@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/stympy/faker.git
+  revision: 35ae2b9aa8e2079d25b36a60212a21a02909c792
+  specs:
+    faker (1.2.0)
+      i18n (~> 0.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -53,8 +60,6 @@ GEM
     factory_girl_rails (4.3.0)
       factory_girl (~> 4.3.0)
       railties (>= 3.0.0)
-    faker (1.2.0)
-      i18n (~> 0.5)
     ffi (1.9.3)
     formatador (0.2.4)
     guard (2.2.4)
@@ -196,7 +201,7 @@ DEPENDENCIES
   database_cleaner
   devise
   factory_girl_rails
-  faker
+  faker!
   guard-rspec
   jquery-rails
   jquery-ui-rails
