@@ -4,7 +4,7 @@ SidelinedRails3::Application.routes.draw do
   #
   resources :players do
     collection do
-      get :autocomplete_player_name
+      get :typeahead
       post :search
     end
   end

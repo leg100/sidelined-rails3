@@ -11,8 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery_ujs
-//= require_tree .
 //= require bootstrap
-//= require jquery.ui.all
-//= require autocomplete-rails
+//= require hogan
+//= require typeahead

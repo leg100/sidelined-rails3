@@ -1,0 +1,6 @@
+form.navbar-form.navbar-left id="typeahead_form" action = search_players_path method="post" role="form"
+  .form-group.example-twitter-oss
+    input.form-control name="short_name" id="typeahead" type="text" placeholder="Search players" autocomplete="off" data-provide="typeahead"
+  = hidden_field_tag 'slug', '', :id => 'hidden_slug'
+  = hidden_field_tag 'authenticity_token', form_authenticity_token
+  = submit_tag "Search", { :class => "btn btn-success" }

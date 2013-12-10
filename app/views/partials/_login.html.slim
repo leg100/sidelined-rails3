@@ -1,0 +1,11 @@
+- if user_signed_in?
+  = button_to "Logout", destroy_user_session_path, { :method => 'delete', :form_class => "navbar-form navbar-right", :class => "btn btn-warning" }
+- else
+  = form_tag(user_session_path, { :class => "navbar-form navbar-right", :role => "form" })
+    .form-group
+      = text_field_tag 'user[email]', '', { :placeholder => 'Email', :class => 'form-control', :id => "username"  }
+    .form-group
+      = password_field_tag 'user[password]', '', { :placeholder => 'Password', :class => 'form-control', :id => "password" }
+      = hidden_field_tag 'authenticity_token', form_authenticity_token
+    = submit_tag "Sign In", { :class => "btn btn-success" }
+

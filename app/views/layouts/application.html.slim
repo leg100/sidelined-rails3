@@ -2,21 +2,25 @@ doctype html
 html
   head
     title SidelinedRails3
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
     = (stylesheet_link_tag    "application", :media => "all")
     = (javascript_include_tag "application") 
     = (csrf_meta_tags) 
   body
-    p.notice = notice
-    p.alert = alert
-    
-    - if user_signed_in?
-      li = link_to('Logout', destroy_user_session_path, :method => :delete)
-    - else
-      li = link_to('Login', new_user_session_path) 
-
-    = form_tag search_players_path
-      = (hidden_field_tag 'slug', '', :id => 'slug_value')
-      = (autocomplete_field_tag 'name', '', autocomplete_player_name_players_path, :update_elements => {:slug => '#slug_value'})
-      = submit_tag "Show Player"
-        
-    == yield
+    .navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          a.navbar-brand href="/" sidelined.io
+        .navbar-collapse.collapse
+          = render 'partials/typeahead'
+          = render 'partials/login'
+    .jumbotron
+    .container
+      .row
+        .col-md-12
+          .notice = notice
+          .alert = alert
+      .row
+        .col-md-12
+          == yield
+    = (javascript_include_tag "sidelined") 
