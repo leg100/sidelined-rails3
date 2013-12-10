@@ -8,6 +8,10 @@ table
 
   - @fixtures.each do |fixture|
     tr
+      td = l(fixture.datetime, format: :short)
+      td = fixture.home_club.short_name
+      td = fixture.away_club.short_name
+      td = fixture.modifier.email
       td = link_to 'Show', fixture
       td = link_to 'Edit', edit_fixture_path(fixture)
       td = link_to 'Destroy', fixture, :confirm => 'Are you sure?', :method => :delete
