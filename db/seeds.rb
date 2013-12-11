@@ -7,6 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 User.create(username: 'leg100', email: 'louisgarman@gmail.com', roles: ['admin'], password: 'j843874q', password_confirmation: 'j843874q').save(validate: false)
+User.create(username: 'wikipedia', email: 'louisgarman+wikipedia@gmail.com', roles: ['admin'], password: 'j843874q', password_confirmation: 'j843874q').save(validate: false)
 Club.create(long_name: "Arsenal F.C.", short_name: "ARS")
 Club.create(long_name: "Aston Villa F.C.", short_name: "AST")
 Club.create(long_name: "Cardiff City F.C.", short_name: "CAR")
