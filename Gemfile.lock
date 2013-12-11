@@ -61,6 +61,7 @@ GEM
     diff-lcs (1.2.5)
     easy_diff (0.0.2)
     erubis (2.7.0)
+    execjs (2.0.2)
     factory_girl (4.3.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.3.0)
@@ -199,6 +200,9 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.38)
+    uglifier (2.3.2)
+      execjs (>= 0.3.0)
+      json (>= 1.8.0)
     warden (1.2.3)
       rack (>= 1.0)
     websocket (1.0.7)
@@ -226,4 +230,5 @@ DEPENDENCIES
   rspec-rails
   selenium-webdriver
   slim-rails
+  uglifier
   wirble
