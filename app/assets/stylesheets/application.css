@@ -13,3 +13,6 @@
  *= require typeahead
  *= require typeahead_custom
 */
+
+/* http://getbootstrap.com/components/#navbar-component-alignment */
+body { padding-top: 40px; }
