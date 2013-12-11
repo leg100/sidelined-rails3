@@ -13,7 +13,8 @@ feature 'User management' do
   scenario "sign up" do
     expect {
       visit new_user_registration_path
-      fill_in 'signup_username', with: 'newuser@example.com'
+      fill_in 'signup_username', with: 'fanboy123'
+      fill_in 'signup_email', with: 'newuser@example.com'
       fill_in 'signup_password', with: 'secret123'
       fill_in 'signup_password_confirmation', with: 'secret123'
       click_button 'Sign up'
