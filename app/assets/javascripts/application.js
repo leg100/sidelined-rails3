@@ -14,3 +14,4 @@
 //= require bootstrap
 //= require hogan
 //= require typeahead
+//= require sidelined
