@@ -1,6 +1,7 @@
 class FixturesController < ApplicationController
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :destroy]
-  #
+  skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+  
   # GET /fixtures
   # GET /fixtures.json
   def index
