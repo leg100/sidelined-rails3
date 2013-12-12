@@ -29,6 +29,14 @@ describe PlayersController do
       end
     end
 
+    describe "POST #create" do
+      it "creates a player" do
+        expect {
+          post :create, player: create(:player)
+        }.to change(Player, :count).by(1)
+      end
+    end
+
     describe "POST #search" do
       it "redirects to players#show" do
         player = create(:player)
