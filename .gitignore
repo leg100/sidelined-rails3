@@ -14,3 +14,10 @@
 /log/*.log
 /tmp
 /vendor/bundle
+
+# Data dumps
+/db/wikipedia
+/db/fixtures
+
+# Editor/IDE crap
+*.swp

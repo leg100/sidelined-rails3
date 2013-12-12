@@ -16,6 +16,7 @@ end
 
 group :development do
   gem 'wirble'
+  gem 'httparty'
 end
 
 group :test do

@@ -3,7 +3,7 @@ module Sidelined
     attr_reader :tokens
     def initialize(wiki_title)
       without_brackets = wiki_title.strip.gsub(/\s?\([^\)]+\)/, '')
-      @tokens = without_brackets.strip.split(/ /)
+      @tokens = without_brackets.strip.split(/[ _]/)
     end
     
     def to_s
