@@ -11,7 +11,7 @@ describe FixturesController do
 
     describe "POST #create" do
       it "saves new fixture to database" do
-        fixture = create(:fixture)
+        fixture = build(:fixture)
         expect {
           post :create, fixture: {
             datetime: fixture.datetime,
@@ -21,7 +21,7 @@ describe FixturesController do
       end
 
       it "sets modifier to current user" do
-        fixture = create(:fixture)
+        fixture = build(:fixture)
         post :create, fixture: {
           datetime: fixture.datetime,
           home_club: fixture.home_club,

@@ -23,6 +23,14 @@ class Fixture < Event
   validates_presence_of :home_club
   validates_presence_of :away_club
   validates_presence_of :datetime
+  validates_uniqueness_of :home_club, :scope => :away_club
+  validate :club_cannot_play_itself
+
+  def club_cannot_play_itself
+    if home_club === away_club
+      errors.add(:home_club, "cannot play itself")
+    end
+  end
 
   def clubs
     home_club + away_club
