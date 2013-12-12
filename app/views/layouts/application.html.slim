@@ -14,6 +14,8 @@ html
         .navbar-collapse.collapse
           = render 'partials/typeahead'
           = render 'partials/login'
+          - if user_signed_in?
+            p.navbar-text.navbar-right = "Signed in as #{current_user.username}"
     .container
       .row
         .col-md-12
