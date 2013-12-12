@@ -31,4 +31,8 @@ class Player
   def as_json(options={})
     super(options.merge(:include => [:club]))
   end
+
+  def tokens
+    [forenames, surnames, short_name].flatten.map(&:parameterize)
+  end
 end

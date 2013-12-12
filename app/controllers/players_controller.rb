@@ -71,7 +71,8 @@ class PlayersController < ApplicationController
         short_name: p.short_name, 
         value: p.short_name,
         slug: p.slug,
-        tokens: [p.forenames, p.surnames, p.short_name].flatten }
+        tokens: p.tokens
+      }
     }
     render :json => @players
   end
