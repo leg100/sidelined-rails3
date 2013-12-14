@@ -26,10 +26,14 @@ class Player
 
   validates_length_of :short_name, minimum: 2, maximum: 4
   validates_presence_of :long_name
-  validates_uniqueness_of :long_name
+  validates :long_name, :uniqueness => {:case_sensitive => false}
 
   def as_json(options={})
     super(options.merge(:include => [:club]))
+  end
+
+  def self.generate_ticker(name)
+    ::Sidelined::PlayerName.new(name).trkref
   end
 
   def tokens

@@ -16,3 +16,9 @@
 
 /* http://getbootstrap.com/components/#navbar-component-alignment */
 body { padding-top: 60px; }
+
+.ticker {
+  font-family: Arial;
+  font-size: 34px;
+  font-weight: bold;
+}

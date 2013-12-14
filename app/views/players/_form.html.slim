@@ -1,0 +1,11 @@
+= form_for @player, :html => {:id => 'player_form' } do |f|
+  .form-group
+    = f.label "Full name", {:for => "name"}
+    = f.text_field :long_name, {:id => 'name', :name => 'full_name', :class => 'form-control', :required => true}
+  .form-group
+    = f.label "Ticker", {:for => "ticker"}
+    = f.text_field :short_name, {:id => 'ticker', :name => 'trkref', :class => 'form-control', :required => true}
+  .form-group
+    = f.label "Club"
+    = collection_select(:player, :club_id, Club.sort_by_ticker, :id, :short_name, {}, {:class => 'form-control'})
+  = f.submit 'Add', {:class => "btn btn-default"}

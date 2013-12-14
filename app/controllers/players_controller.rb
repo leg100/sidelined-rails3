@@ -1,6 +1,17 @@
 class PlayersController < ApplicationController
   before_filter :authenticate_user!, :only => [:new, :edit, :create, :destroy]
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
+  
+  # GET /players/new
+  # GET /players/new.json
+  def new
+    @player = Player.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @player }
+    end
+  end
 
   # POST /players
   # POST /players.json
@@ -61,6 +72,20 @@ class PlayersController < ApplicationController
     respond_to do |format|
       format.json { render :json => @player }
       format.html { render :html => @player }
+    end
+  end
+
+  # GET /players/tickergen?name=Robin%20Van%20Persie
+  def tickergen
+    render :json => {:ticker => Player.generate_ticker(params[:name]) }
+  end
+
+   # GET /players/namecheck.json
+  def namecheck
+    if Player.where(long_name: /^#{params[:full_name]}$/i).exists?
+      render :json => "\"That player name already exists\""
+    else
+      render :json => true
     end
   end
 

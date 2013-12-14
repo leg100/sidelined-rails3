@@ -1,0 +1,11 @@
+- @events.each do |event|
+  .row  
+    .col-md-1 = event._type
+    .col-md-8
+      = event_partial_helper(event)
+    .col-md-1 = event.modifier.username
+    .col-md-1 = link_to 'Edit', edit_event_path(event)
+    .col-md-1 = link_to 'Destroy', event, :confirm => 'Are you sure?', :method => :delete
+br
+
+= link_to 'New event', new_event_path

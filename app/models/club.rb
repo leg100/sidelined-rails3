@@ -20,6 +20,10 @@ class Club
   
   alias :name :short_name
 
+  def self.sort_by_ticker
+    Club.all.sort_by{|c| c.short_name }
+  end
+
   def fixtures
     home_fixtures + away_fixtures 
   end
