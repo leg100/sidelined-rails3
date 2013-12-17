@@ -1,4 +1,4 @@
-doctype html
+doctype 5
 html
   head
     title SidelinedRails3
@@ -6,16 +6,16 @@ html
     = (stylesheet_link_tag    "application", :media => "all")
     = (javascript_include_tag "application") 
     = (csrf_meta_tags) 
-  body
+  body(ng-app="sidelinedApp")
     .navbar.navbar-inverse.navbar-fixed-top
       .container
         .navbar-header
           a.navbar-brand href="/" sidelined.io
-        .navbar-collapse.collapse
+        .navbar-collapse.collapse(ng-controller="LoginCtrl")
           = render 'partials/typeahead'
           = render 'partials/login'
           - if user_signed_in?
-            p.navbar-text.navbar-right = "Signed in as #{current_user.username}"
+            p.navbar-text.navbar-right Signed in as {{status.username}}
     .container
       .row
         .col-md-12
@@ -23,4 +23,3 @@ html
           .alert = alert
       .row
         .col-md-12
-          == yield

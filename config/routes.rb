@@ -14,6 +14,10 @@ SidelinedRails3::Application.routes.draw do
   resources :clubs
   resources :events
   resources :fixtures
+ 
+  devise_scope :user do
+    get '/current-user' => 'users/sessions#get_current_user'
+  end
 
   root :to => 'events#index'
 
