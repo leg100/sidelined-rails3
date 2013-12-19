@@ -14,7 +14,7 @@
 //= require angular-resource.min
 //= require angular-cookies.min
 //= require angular-route.min
-//= require bootstrap
+//= require ui-bootstrap-tpls-0.7.0
 //= require_tree .
 //= require sidelined
 

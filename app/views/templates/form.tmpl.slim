@@ -1,0 +1,15 @@
+form(novalidate class="login-form")
+  .modal-header
+    h4 Sign in
+    div class="modal-body"
+      div class="alert alert-warning" ng-show="authReason" {{authReason}}
+      div class="alert alert-error" ng-show="authError" {{authError}}
+      div class="alert alert-info" Please enter your login details
+      label E-mail
+      input(type="email" ng-model="user.email" required autofocus)
+      label Password
+      input(type="password" ng-model="user.password" required)
+    div class="modal-footer"
+      button class="btn btn-primary login" ng-click="login()" ng-disabled='form.$invalid' Sign in
+      button class="btn clear" ng-click="clear()" Clear
+      button class="btn btn-warning cancel" ng-click="cancel()" Cancel
