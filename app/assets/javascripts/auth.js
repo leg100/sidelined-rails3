@@ -122,7 +122,8 @@ angular.module('auth', ['ui.bootstrap'])
 
     // Try to login
     security.login($scope.user.email, $scope.user.password).then(function(response) {
-      $log.info(response);
+      var currentuser = security.requirecurrentuser;
+      $log.info(currentuser);
       $modalInstance.close();
     }, function(err) {
       $scope.authError = err;

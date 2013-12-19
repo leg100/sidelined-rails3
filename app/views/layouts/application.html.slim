@@ -7,15 +7,12 @@ html
     = (javascript_include_tag "application") 
     = (csrf_meta_tags) 
   body(ng-app="sidelinedApp")
-    div(ng-controller="LoginStatusController")
-      ul.nav.pull-right
-        li.divider-vertical
-        li(ng-show="isAuthenticated()")
-          a href="#" {{username}}
-        li.logout(ng-show="isAuthenticated()")
-          form.navbar-form
-            button.btn.logout(ng-click="logout()") Log out
-        li.login(ng-hide="isAuthenticated()")
-          form.navbar-form(ng-controller="LoginModalController")
-            button.btn.login(ng-click="open()") Log in
-    == yield
+    .navbar.navbar-fixed-top.navbar-inverse
+      .navbar-inner
+        .container
+          a.brand href="/" sidelined.io
+          = render 'partials/login'
+    .container
+      .row
+        .col-md-12
+          == yield
