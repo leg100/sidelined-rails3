@@ -14,6 +14,7 @@ SidelinedRails3::Application.routes.draw do
   resources :clubs
   resources :events
   resources :fixtures
+  resource :angular_root, :only => [:show]
   get '/templates/:path' => 'templates#template', :constraints => { :path => /.+/  }
  
   devise_scope :user do
@@ -22,5 +23,5 @@ SidelinedRails3::Application.routes.draw do
     post '/logout' => 'users/sessions#destroy'
   end
   devise_for :user
-  root :to => 'events#index'
+  root :to => 'angular_root#show'
 end
