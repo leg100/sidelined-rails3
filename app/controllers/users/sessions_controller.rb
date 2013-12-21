@@ -1,11 +1,11 @@
 class Users::SessionsController < Devise::SessionsController
 
   skip_before_filter :verify_authenticity_token
-
+  before_filter :require_params, :only => [ :create ]
   respond_to :json
+  prepend_before_filter :require_no_authentication, :only => [ :new ]
 
   def create
-    logger.debug(params)
     resource = User.find_for_database_authentication(
       login: params[:user][:login]
     )
@@ -43,5 +43,16 @@ class Users::SessionsController < Devise::SessionsController
         info: 'Login Failed',
         data: {}
       }
+  end
+
+private
+  def require_params
+    return unless params[:user][:login].blank?
+    return unless params[:user][:password].blank?
+    render status: 200, json: {
+      success: false,
+      info: 'Missing credentials',
+      data: {}
+    }
   end
 end

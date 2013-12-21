@@ -1,12 +1,15 @@
-form(novalidate class="login-form")
+form(novalidate name="form" class="login-form")
   .modal-header
     h4 Sign in
     div class="modal-body"
       div class="alert alert-warning" ng-show="authReason" {{authReason}}
       div class="alert alert-error" ng-show="authError" {{authError}}
       div class="alert alert-info" Please enter your login details
-      label E-mail
-      input(type="email" ng-model="user.email" required autofocus)
+      .control-group ng-class="{error: form.email.$error.email}"
+        label E-mail
+        .controls
+          input(name="email" type="email" ng-model="user.email" required autofocus)
+          span.help-inline ng-show="form.email.$error.email" This is an invalid email.
       label Password
       input(type="password" ng-model="user.password" required)
     div class="modal-footer"

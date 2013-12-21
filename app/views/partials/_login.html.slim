@@ -1,8 +1,7 @@
 ul.nav.pull-right(ng-controller="LoginStatusController")
   li.divider-vertical
-    a href="#" Hello
-  li(ng-show="true")
-    a href="#" {{username}}
+  li(ng-show="isAuthenticated()")
+    a href="#" {{username}} is logged in
   li.logout(ng-show="isAuthenticated()")
     form.navbar-form
       button.btn.logout(ng-click="logout()") Log out

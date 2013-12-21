@@ -1,1 +1,4 @@
-sidelinedApp = angular.module('sidelinedApp', ['ngResource', 'auth']);
+sidelinedApp = angular.module('sidelinedApp', ['ngResource', 'auth'])
+.run(function(authService){
+  authService.requestcurrentuser();
+});

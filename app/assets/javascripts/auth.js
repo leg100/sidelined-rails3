@@ -44,14 +44,13 @@ angular.module('auth', ['ui.bootstrap'])
     },
     // ask the backend to see if a user is already authenticated - this may be from a previous session.
     requestcurrentuser: function() {
-      if ( service.isauthenticated() ) {
+      if ( service.isAuthenticated() ) {
         console.log("not making http request to /current_user");
         return $q.when(service.currentuser);
       } else {
         return $http.get('/current-user').then(function(response) {
           console.log("making http request to /current_user");
-          console.dir("response: " + response.data.username);
-          service.currentuser = response.data;
+          service.currentuser = response.data.username;
           return service.currentuser;
         });
       }
