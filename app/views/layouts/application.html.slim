@@ -14,5 +14,6 @@ html
           = render 'partials/login'
     .container
       .row
-        .col-md-12
-          == yield
+        .col-md-12(ng-controller="EventsCtrl")
+          .row ng-repeat="event in events"
+            event

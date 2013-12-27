@@ -1,5 +1,4 @@
-sidelinedApp = angular.module('sidelinedApp', ['ngResource', 'auth'])
+sidelinedApp = angular.module('sidelinedApp', ['auth', 'events'])
 .run((authService) -> 
   authService.requestcurrentuser()
   )
-

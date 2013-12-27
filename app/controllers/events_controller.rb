@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
  def index
-    @events = Event.all
+    @events = Event.includes(:modifier).all.sort_by{|e| e.updated_at}
     respond_to do |format|
       format.html # index.html.erb
       format.json { render :json => @events }

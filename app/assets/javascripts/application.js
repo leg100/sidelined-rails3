@@ -11,10 +11,10 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require angular
-//= require angular-resource
 //= require angular-cookies
 //= require angular-route
 //= require ui-bootstrap-tpls-0.7.0
+//= require angularjs-rails-resource
 //= require_tree .
 //= require sidelined
 
