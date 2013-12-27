@@ -1,18 +1,35 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-angular.module('events', ['rails'])
+angular.module('events', ['rails', 'ui.bootstrap'])
 .factory('EventService', ['railsResourceFactory', function(railsResourceFactory) {
   return railsResourceFactory({
     url: '/events',
-    name: 'event'
+    name: 'event',
+    responseInterceptors: [function(promise) {
+      return promise.then(function(response) {
+        response.data.$total = response.originalData.meta.total;
+        return response;
+      });
+    }]
   });
 }])
-.controller('EventsCtrl', ['$scope', 'EventService', function($scope, EventService) {
-  EventService.query({}).then(function(resp){
-    console.log(resp[0]);
-    console.log(resp[1]);
-    $scope.events = resp;
-  });
+.controller('EventListCtrl', ['$scope', 'EventService', function($scope, EventService) {
+  $scope.itemsPerPage = 100;
+
+  var query = function(page) {
+    EventService.query({page: page}).then(function(resp){
+      $scope.events = resp;
+      $scope.currentPage = page;
+      $scope.totalItems = resp.$total;
+      $scope.maxSize = 10;
+    });
+  };
+
+  $scope.goToPage = function(page) {
+    query(page);
+  };
+
+  query(1);
 }])
 .directive('event', ['$compile', '$http', '$templateCache', function($compile, $http, $templateCache) {
 

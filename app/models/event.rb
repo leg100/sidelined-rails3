@@ -5,6 +5,8 @@ class Event
   include Mongoid::Timestamps
   include Mongoid::History::Trackable
 
+  paginates_per 100
+
   track_history   :on => :all,
                   :modifier_field => :modifier,
                   :modifier_field_inverse_of => :nil,
