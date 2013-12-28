@@ -7,11 +7,52 @@ angular.module('events', ['rails', 'ui.bootstrap'])
     name: 'event',
     responseInterceptors: [function(promise) {
       return promise.then(function(response) {
-        response.data.$total = response.originalData.meta.total;
+        if (response.originalData.meta)
+          response.data.$total = response.originalData.meta.total;
         return response;
       });
     }]
   });
+}])
+.factory('Injury', ['railsResourceFactory', function(railsResourceFactory) {
+  return railsResourceFactory({
+    url: '/injuries',
+    name: 'injury'
+  });
+}])
+.factory('Player', ['railsResourceFactory', function(railsResourceFactory) {
+  return railsResourceFactory({
+    url: '/players',
+    name: 'player'
+  });
+}])
+.controller('EventAddCtrl', ['$scope', 'Player', 'EventService', function($scope, Player, EventService) {
+  $scope.type = "injury";
+  $scope.source = "http://source";
+  $scope.selected_player = null;
+  Player.query({typeahead: true}).then(function(resp) {
+    $scope.players = resp;
+  });
+  $scope.add = function() {
+    new EventService({
+      _type: 'Injury',
+      source: $scope.source,
+      player: $scope.selected_player.id
+    }).create()
+  };
+}])
+.controller('InjuryAddCtrl', ['$scope', 'Player', 'Injury', function($scope, Player, Injury) {
+  $scope.source = "http://source";
+  $scope.selected_player = null;
+  Player.query({typeahead: true}).then(function(resp) {
+    $scope.players = resp;
+  });
+  $scope.add = function() {
+    new Injury({
+      source: $scope.source,
+      player: $scope.selected_player.id
+    }).create()
+  };
 }])
 .controller('EventListCtrl', ['$scope', 'EventService', function($scope, EventService) {
   $scope.itemsPerPage = 100;

@@ -60,10 +60,10 @@ class PlayersController < ApplicationController
   end
 
   def index
-    @players = Player.all
-    respond_to do |format|
-      format.json { render :json => @players }
-      format.html { render :html => @players }
+    if params[:typeahead]
+      render :json => Player.all, each_serializer: PlayerTypeaheadSerializer 
+    else
+      render :json => Player.all
     end
   end
 

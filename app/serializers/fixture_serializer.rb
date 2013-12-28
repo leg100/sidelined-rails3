@@ -3,6 +3,6 @@ class FixtureSerializer < EventSerializer
   has_one :away_club
 
   def template_url
-    "/templates/fixture.tmpl"
+    "/templates/events/fixture.tmpl"
   end
 end

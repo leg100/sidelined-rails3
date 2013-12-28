@@ -84,7 +84,7 @@ angular.module('auth', ['ui.bootstrap'])
 
   $scope.open = function() {
     var modalInstance = $modal.open({
-      templateUrl: '/templates/form.tmpl', 
+      templateUrl: '/templates/auth/form.tmpl', 
       controller: 'LoginModalInstanceController'
     });
     modalInstance.result.then(function() {
@@ -143,7 +143,7 @@ angular.module('auth', ['ui.bootstrap'])
 // and information the current authenticated user
 .directive('loginToolbar', ['authService', function(authService) {
   var directive = {
-    templateUrl: '/templates/login.tmpl',
+    templateUrl: '/templates/auth/login.tmpl',
     restrict: 'E',
     replace: true,
     scope: true,

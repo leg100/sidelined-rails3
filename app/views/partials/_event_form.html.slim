@@ -1,0 +1,20 @@
+.col-md-12(ng-controller="EventAddCtrl")
+  .row
+    .col-md-12
+      .control-group
+        .controls
+          select(ng-model="type")
+            option(value="fixture" ng-selected="type=='fixture'") Fixture
+            option(value="injury" ng-selected="type=='injury'") Injury
+  .row(ng-controller="InjuryAddCtrl")
+    .col-md-12
+      form(novalidate name="form" class="injury-form")
+        .control-group
+          label Player
+          .controls
+            input type="text" ng-model="selected_player" typeahead="player as player.tickerAndName for player in players | filter:$viewValue | limitTo:8"
+        .control-group
+          label Source
+          .controls
+            input(name="source" type="url" ng-model="source" required autofocus)
+        button.btn(ng-click="add()") Add {{type}}

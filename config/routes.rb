@@ -13,6 +13,7 @@ SidelinedRails3::Application.routes.draw do
   end
   resources :clubs
   resources :events
+  resources :injuries, :only => [:create]
   resources :fixtures
   resource :angular_root, :only => [:show]
   get '/templates/:path' => 'templates#template', :constraints => { :path => /.+/  }

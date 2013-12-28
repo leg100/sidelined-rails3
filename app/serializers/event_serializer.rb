@@ -3,6 +3,6 @@ class EventSerializer < ActiveModel::Serializer
   has_one :modifier
 
   def template_url
-    "/templates/event.tmpl"
+    "/templates/events/event.tmpl"
   end
 end

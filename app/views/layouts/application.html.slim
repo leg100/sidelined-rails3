@@ -14,8 +14,10 @@ html
           = render 'partials/login'
     .container
       .row
+        = render 'partials/event_form'
+      .row
         .col-md-12(ng-controller="EventListCtrl")
           .row
-           pagination total-items="totalItems" page="currentPage" max-size="maxSize" on-select-page="goToPage(page)" items-per-page="itemsPerPage"
+            pagination total-items="totalItems" page="currentPage" max-size="maxSize" on-select-page="goToPage(page)" items-per-page="itemsPerPage"
           .row ng-repeat="event in events"
             event

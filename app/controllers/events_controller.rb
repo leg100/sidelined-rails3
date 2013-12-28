@@ -1,6 +1,21 @@
 class EventsController < ApplicationController
   before_filter :require_params, :only => [ :index ]
 
+  def create
+    # workaround for https://github.com/aq1018/mongoid-history/issues/26
+    @event = Event.new(params[:event].merge(modifier: current_user))
+    logger.debug(@event)
+
+    respond_to do |format|
+      if @event.save
+        format.json { render json: @event, status: :created}
+      else
+        format.json { render json: @event.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
   def index
     @events = Event.includes(:modifier).desc(:updated_at)
       .asc(:pageid).page(params[:page])

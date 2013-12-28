@@ -3,6 +3,6 @@ class InjurySerializer < EventSerializer
   has_one :player
 
   def template_url
-    "/templates/injury.tmpl"
+    "/templates/events/injury.tmpl"
   end
 end
