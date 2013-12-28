@@ -15,10 +15,9 @@ class EventsController < ApplicationController
     end
   end
 
-
   def index
     @events = Event.includes(:modifier).desc(:updated_at)
-      .asc(:pageid).page(params[:page])
+      .page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
