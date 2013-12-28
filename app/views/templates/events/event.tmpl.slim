@@ -1,6 +1,8 @@
-.span1
-  | {{event._type}} 
-.span1
-  | {{event.version}} 
-.span1
-  | {{event.modifier.username}} 
+.row
+  .span1
+    | {{event._type}} 
+  .span1
+    | {{event.version}} 
+  .span1
+    | {{event.modifier.username}} 
+  button.btn.btn-danger ng-click="removeEvent($index)" Delete

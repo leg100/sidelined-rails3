@@ -1,5 +1,5 @@
 class PlayerSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :long_name, :short_name
 end
 
 

@@ -1,10 +1,12 @@
-.span1
-  | {{event._type}} 
-.span1
-  | {{event.version}} 
-.span1
-  | {{event.modifier.username}} 
-.span1
-  | {{event.homeClub.shortName}} 
-.span1
-  | {{event.awayClub.shortName}} 
+.row
+  .span1
+    | {{event._type}} 
+  .span1
+    | {{event.version}} 
+  .span1
+    | {{event.modifier.username}} 
+  .span1
+    | {{event.homeClub.shortName}} 
+  .span1
+    | {{event.awayClub.shortName}} 
+  button.btn.btn-danger ng-click="removeEvent($index)" Delete

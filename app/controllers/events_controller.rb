@@ -15,6 +15,13 @@ class EventsController < ApplicationController
     end
   end
 
+  def destroy
+    @event = Event.find(params[:id])
+    @event.destroy
+
+    render json: @event
+  end
+
   def index
     @events = Event.includes(:modifier).desc(:updated_at)
       .page(params[:page])
