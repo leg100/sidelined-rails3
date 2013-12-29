@@ -1,9 +1,3 @@
-.col-md-12(ng-controller="EventAddCtrl")
-  alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)" {{alert.msg}}
-  .row
-      .control-group
-        .controls
-          select(ng-model="type")
 .col-md-8(ng-controller="EventAddCtrl")
   .row(ng-controller="InjuryAddCtrl")
     form.form-inline(novalidate name="form")

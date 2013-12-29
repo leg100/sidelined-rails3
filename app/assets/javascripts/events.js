@@ -1,15 +1,6 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-angular.module('events', ['rails', 'ui.bootstrap'])
-// vidiprinter broker
-.factory('AlertBroker', ['$rootScope', function($rootScope) {
-  var alertBroker = {};
-  alertBroker.broadcastAlert = function(msg) {
-    this.message = msg;
-    $rootScope.$broadcast('alert');
-  };
-  return alertBroker;
-}])
+angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 .factory('EventListingService', ['$rootScope', function($rootScope) {
   var eventListingService = {};
   eventListingService.broadcastItem = function() {
@@ -42,19 +33,12 @@ angular.module('events', ['rails', 'ui.bootstrap'])
     name: 'player'
   });
 }])
-.controller('EventAddCtrl', ['$scope', 'Player', 'EventService', 'AlertBroker', function($scope, Player, EventService, AlertBroker) {
+.controller('EventAddCtrl', ['$scope', 'Player', 'EventService', function($scope, Player, EventService) {
   $scope.type = "injury";
   $scope.source = null;
-  $scope.alerts = [];
   Player.query({typeahead: true}).then(function(resp) {
     $scope.players = resp;
     $scope.selected_player = resp[0];
-  });
-  $scope.$on('alert', function() {
-    $scope.alerts.push({
-      msg: AlertBroker.message,
-      type: "success"
-    });
   });
   $scope.add = function() {
     new EventService({
@@ -62,9 +46,6 @@ angular.module('events', ['rails', 'ui.bootstrap'])
       source: $scope.source,
       player: $scope.selected_player.id
     }).create()
-  };
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
   };
 }])
 .controller('InjuryAddCtrl', ['$scope', 'Player', 'Injury', 'EventListingService', 'AlertBroker', function($scope, Player, Injury, EventListingService, AlertBroker) {

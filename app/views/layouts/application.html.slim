@@ -15,6 +15,9 @@ html
           = render 'partials/login'
     .container
       .row
+        .col-md-6(ng-controller="AlertCtrl")
+          alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)" {{alert.msg}}
+      .row
         = render 'partials/event_form'
       .row
         .col-md-12(ng-controller="EventListCtrl")
