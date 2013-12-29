@@ -8,7 +8,7 @@
   .col-md-2
     a href="event.source" {{event.source}}
   .col-md-3
-    | {{event.returnDate||"Unknown"}} 
+    | {{event.returnDate|date:format||"Unknown"}} 
   .col-md-1
     | {{event.player.shortName}} 
   button.btn.btn-danger ng-click="removeEvent($index)" Delete

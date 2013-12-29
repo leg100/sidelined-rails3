@@ -33,16 +33,9 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
     name: 'player'
   });
 }])
-.controller('InjuryAddCtrl', ['$scope', 'Player', 'Injury', 'EventListingService', 'AlertBroker', function($scope, Player, Injury, EventListingService, AlertBroker) {
+.controller('InjuryEditCtrl', ['$scope', 'Player', 'Injury', 'EventListingService', 'AlertBroker', function($scope, Player, Injury, EventListingService, AlertBroker) {
   // init params
   $scope.type = 'injury';
-  $scope.selected_player = null;
-  $scope.newsSource = null;
-  $scope.returnDate = null;
-
-  $scope.canSave = function() {
-    return $scope.form.$dirty && $scope.form.$valid;
-  };
 
   // datepicker
   $scope.dateOptions = {
@@ -69,12 +62,33 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
   // trigger update
   $scope.add = function() {
     new Injury({
-      source: $scope.newsSource,
-      player: $scope.selected_player.id,
-      return_date: $scope.returnDate
+      source: $scope.event.source,
+      player: $scope.event.selected_player.id,
+      return_date: $scope.event.returnDate
     }).create().then(function(injury) {
-      AlertBroker.success("Added new injury to "+ $scope.selected_player.tickerAndName)
+      AlertBroker.success("Added new injury to "+ $scope.event.selected_player.tickerAndName)
       EventListingService.broadcastItem();
+    }, function(err) {
+      AlertBroker.error(err.data);
+    });
+  };
+
+  $scope.canSave = function() {
+    return $scope.form.$dirty && $scope.form.$valid;
+  };
+
+  $scope.canUpdate = function() {
+    return $scope.form.$dirty && $scope.form.$valid;
+  };
+
+  $scope.cancelUpdate = function() {
+    $scope.toggleEditMode();
+  };
+
+  $scope.updateEvent = function() {
+    $scope.event.update().then(function(resp) {
+      $scope.toggleEditMode();
+      AlertBroker.success("Updated event "+ resp.id);
     }, function(err) {
       AlertBroker.error(err.data);
     });
@@ -82,6 +96,9 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 }])
 .controller('EventListCtrl', ['$scope', 'EventService', 'EventListingService', 'AlertBroker', function($scope, EventService, EventListingService, AlertBroker) {
   $scope.itemsPerPage = 100;
+
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
+  $scope.format = $scope.formats[0];
 
   var query = function(page) {
     EventService.query({page: page}).then(function(resp){
@@ -119,24 +136,5 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 
   $scope.editEvent = function() {
     $scope.toggleEditMode();
-  };
-}])
-.controller('EventEditCtrl', ['$scope', 'EventService', 'EventListingService', 'AlertBroker', function($scope, EventService, EventListingService, AlertBroker) {
-
-  $scope.canUpdate = function() {
-    return $scope.form.$dirty && $scope.form.$valid;
-  };
-
-  $scope.cancelUpdate = function() {
-    $scope.toggleEditMode();
-  };
-
-  $scope.updateEvent = function() {
-    $scope.event.update().then(function(resp) {
-      $scope.toggleEditMode();
-      AlertBroker.success("Updated event "+ resp.id);
-    }, function(err) {
-      AlertBroker.error(err.data);
-    });
   };
 }]);
