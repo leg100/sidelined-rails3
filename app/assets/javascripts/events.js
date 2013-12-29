@@ -33,23 +33,9 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
     name: 'player'
   });
 }])
-.controller('EventAddCtrl', ['$scope', 'Player', 'EventService', function($scope, Player, EventService) {
-  $scope.type = "injury";
-  $scope.source = null;
-  Player.query({typeahead: true}).then(function(resp) {
-    $scope.players = resp;
-    $scope.selected_player = resp[0];
-  });
-  $scope.add = function() {
-    new EventService({
-      _type: 'Injury',
-      source: $scope.source,
-      player: $scope.selected_player.id
-    }).create()
-  };
-}])
 .controller('InjuryAddCtrl', ['$scope', 'Player', 'Injury', 'EventListingService', 'AlertBroker', function($scope, Player, Injury, EventListingService, AlertBroker) {
   // init params
+  $scope.type = 'injury';
   $scope.selected_player = null;
   $scope.newsSource = null;
   $scope.returnDate = null;
