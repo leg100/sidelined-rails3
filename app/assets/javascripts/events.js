@@ -101,7 +101,6 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
     return $http.get(templateUrl, {cache: $templateCache});
   };
   var linker = function(scope, element, attrs) {
-    console.log("linking");
     var loader = getTemplate(scope.event.templateUrl);
     var promise = loader.success(function(html) {
       element.html(html);

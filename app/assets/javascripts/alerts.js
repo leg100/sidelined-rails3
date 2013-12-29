@@ -8,15 +8,19 @@ angular.module('alerts', [])
   };
   return alertBroker;
 }])
-.controller('AlertCtrl', ['$scope', 'AlertBroker', function($scope, AlertBroker) {
+.controller('AlertCtrl', ['$scope', 'AlertBroker', '$timeout', function($scope, AlertBroker, $timeout) {
   $scope.alerts = [];
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
+  function closeLastAlert() {
+    $scope.alerts.pop();
+  };
   $scope.$on('alert', function() {
     $scope.alerts.push({
       msg: AlertBroker.message,
       type: "success"
     });
+    $timeout(closeLastAlert, 5000);
   });
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
 }])
