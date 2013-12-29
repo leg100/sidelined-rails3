@@ -110,4 +110,33 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
   };
 
   query(1);
+}])
+.controller('EventCtrl', ['$scope', 'EventService', 'EventListingService', 'AlertBroker', function($scope, EventService, EventListingService, AlertBroker) {
+  $scope.editMode = false;
+  $scope.toggleEditMode = function(){
+    $scope.editMode = !$scope.editMode;
+  };
+
+  $scope.editEvent = function() {
+    $scope.toggleEditMode();
+  };
+}])
+.controller('EventEditCtrl', ['$scope', 'EventService', 'EventListingService', 'AlertBroker', function($scope, EventService, EventListingService, AlertBroker) {
+
+  $scope.canUpdate = function() {
+    return $scope.form.$dirty && $scope.form.$valid;
+  };
+
+  $scope.cancelUpdate = function() {
+    $scope.toggleEditMode();
+  };
+
+  $scope.updateEvent = function() {
+    $scope.event.update().then(function(resp) {
+      $scope.toggleEditMode();
+      AlertBroker.success("Updated event "+ resp.id);
+    }, function(err) {
+      AlertBroker.error(err.data);
+    });
+  };
 }]);

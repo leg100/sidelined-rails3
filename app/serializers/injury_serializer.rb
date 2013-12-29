@@ -5,4 +5,8 @@ class InjurySerializer < EventSerializer
   def template_url
     "/templates/events/injury.tmpl"
   end
+
+  def edit_template_url
+    "/templates/events/injury.edit.tmpl"
+  end
 end

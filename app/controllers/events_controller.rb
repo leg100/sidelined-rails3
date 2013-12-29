@@ -15,6 +15,18 @@ class EventsController < ApplicationController
     end
   end
 
+  def update
+    @event = Event.find(params[:id])
+
+    respond_to do |format|
+      if @event.update_attributes(params[:event])
+        format.json { head :no_content }
+      else
+        format.json { render json: @event.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def destroy
     @event = Event.find(params[:id])
     @event.destroy

@@ -1,0 +1,10 @@
+.row(ng-controller="EventEditCtrl")
+  form.form-inline(novalidate name="form")
+    .form-group.myPadding
+      input.form-control(type="text" datepicker-popup="{{format}}" ng-model="event.returnDate" is-open="opened" min="minDate" max="'2015-06-22'" datepicker-options="dateOptions" close-text="Close" placeholder="Return date")
+    .form-group.myPadding
+      input.form-control(type="text" ng-model="event.source" placeholder="News source")
+    .form-group.myPadding
+      button.btn.btn-default(ng-click="updateEvent()" ng-disabled="!canUpdate()") Update
+    .form-group.myPadding
+      button.btn.btn-danger(ng-click="cancelUpdate()") Cancel
