@@ -23,4 +23,4 @@ html
         .col-md-12(ng-controller="EventListCtrl")
           .row
             pagination total-items="totalItems" page="currentPage" max-size="maxSize" on-select-page="goToPage(page)" items-per-page="itemsPerPage"
-          event ng-repeat="event in events"
+          div(ng-repeat="event in events" ng-include="event.templateUrl")

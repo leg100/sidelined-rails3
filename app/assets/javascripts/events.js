@@ -68,7 +68,6 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 
   // trigger update
   $scope.add = function() {
-    console.log($scope.newsSource);
     new Injury({
       source: $scope.newsSource,
       player: $scope.selected_player.id,
@@ -111,24 +110,4 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
   };
 
   query(1);
-}])
-.directive('event', ['$compile', '$http', '$templateCache', 'EventService', function($compile, $http, $templateCache, EventService) {
-
-  var getTemplate = function(templateUrl) {
-    return $http.get(templateUrl, {cache: $templateCache});
-  };
-  var linker = function(scope, element, attrs) {
-    var loader = getTemplate(scope.event.templateUrl);
-    var promise = loader.success(function(html) {
-      element.html(html);
-    }).then(function(resp) {
-      element.replaceWith($compile(element.html())(scope));
-    });
-  };
-
-  return {
-    restrict: 'E',
-    link: linker
-  }
 }]);
-
