@@ -46,7 +46,13 @@ class Injury < Event
   field :return_date, type: Date
 
   validate :return_date_cannot_be_in_the_past
-  validates_format_of :source, :with => URI::regexp(%w(http https))
+  validate :source_must_be_url_if_present
+
+  def source_must_be_url_if_present
+    if source.present? && source !~ /^(http|https)/
+      errors.add(:source, "must be be a valid URL")
+    end
+  end
 
   def return_date_cannot_be_in_the_past
     if return_date.present? && return_date < Date.today

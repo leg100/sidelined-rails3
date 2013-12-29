@@ -49,15 +49,44 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
   };
 }])
 .controller('InjuryAddCtrl', ['$scope', 'Player', 'Injury', 'EventListingService', 'AlertBroker', function($scope, Player, Injury, EventListingService, AlertBroker) {
-  $scope.source = "http://source";
+  // init params
   $scope.selected_player = null;
+  $scope.newsSource = null;
+  $scope.returnDate = null;
+
+  $scope.canSave = function() {
+    return $scope.form.$dirty && $scope.form.$valid;
+  };
+
+  // datepicker
+  $scope.dateOptions = {
+    'year-format': "'yy'",
+    'starting-day': 1
+  };
+  $scope.today = function() {
+    $scope.minDate = new Date();
+  };
+  $scope.today();
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
+  $scope.format = $scope.formats[0];
+  $scope.open = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.opened = true;
+  };
+
+  // populate typeahead
   Player.query({typeahead: true}).then(function(resp) {
     $scope.players = resp;
   });
+
+  // trigger update
   $scope.add = function() {
+    console.log($scope.newsSource);
     new Injury({
-      source: $scope.source,
-      player: $scope.selected_player.id
+      source: $scope.newsSource,
+      player: $scope.selected_player.id,
+      return_date: $scope.returnDate
     }).create().then(function(injury) {
       AlertBroker.success("Added new injury to "+ $scope.selected_player.tickerAndName)
       EventListingService.broadcastItem();
