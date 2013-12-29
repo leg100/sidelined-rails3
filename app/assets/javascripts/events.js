@@ -59,8 +59,10 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
       source: $scope.source,
       player: $scope.selected_player.id
     }).create().then(function(injury) {
-      AlertBroker.broadcastAlert("Added new injury to "+ $scope.selected_player.tickerAndName)
+      AlertBroker.success("Added new injury to "+ $scope.selected_player.tickerAndName)
       EventListingService.broadcastItem();
+    }, function(err) {
+      AlertBroker.error(err.data);
     });
   };
 }])
@@ -85,7 +87,7 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 
     event.remove().then(function(resp){
       query(1);
-      AlertBroker.broadcastAlert("Removed event "+ resp.id) 
+      AlertBroker.success("Removed event "+ resp.id) 
     });
   };
 
