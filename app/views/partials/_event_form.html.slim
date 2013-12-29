@@ -4,11 +4,19 @@
       .control-group
         .controls
           select(ng-model="type")
+.col-md-8(ng-controller="EventAddCtrl")
+  .row(ng-controller="InjuryAddCtrl")
+    form.form-inline(novalidate name="form")
+      .col-md-3
+        .form-group
+          select.form-control(ng-model="type")
             option(value="fixture" ng-selected="type=='fixture'") Fixture
             option(value="injury" ng-selected="type=='injury'") Injury
-  .row(ng-controller="InjuryAddCtrl")
-    .col-md-12
-      form.form-inline(novalidate name="form")
-        input(autofocus type="text" ng-model="selected_player" typeahead="player as player.tickerAndName for player in players | filter:$viewValue | limitTo:8" placeholder="Player")
-        input(name="source" type="url" ng-model="source" required placeholder="Source")
-        button.btn(ng-click="add()") Add {{type}}
+      .col-md-3
+        .form-group
+          input.form-control(autofocus type="text" ng-model="selected_player" typeahead="player as player.tickerAndName for player in players | filter:$viewValue | limitTo:8" placeholder="Player")
+      .col-md-3
+        .form-group
+          input.form-control(name="source" type="url" ng-model="source" required placeholder="Source")
+      .col-md-2
+        button.btn.btn-default(ng-click="add()") Add {{type}}

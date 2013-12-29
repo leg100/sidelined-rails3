@@ -13,7 +13,7 @@
 //= require angular
 //= require angular-cookies
 //= require angular-route
-//= require ui-bootstrap-tpls-0.7.0
+//= require ui-bootstrap-tpls-0.9.0
 //= require angularjs-rails-resource
 //= require_tree .
 //= require sidelined
