@@ -36,6 +36,11 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 .controller('InjuryEditCtrl', ['$scope', 'Player', 'Injury', 'EventListingService', 'AlertBroker', 'limitToFilter', '$filter', function($scope, Player, Injury, EventListingService, AlertBroker, limitToFilter, $filter) {
   // init params
   $scope.type = 'injury';
+  $scope.event || ($scope.event = {
+    player: null,
+    source: null,
+    returnDate: null
+  });
 
   // datepicker
   $scope.dateOptions = {
@@ -67,10 +72,10 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
   $scope.add = function() {
     new Injury({
       source: $scope.event.source,
-      player: $scope.event.selected_player.id,
+      player: $scope.event.player.id,
       return_date: $scope.event.returnDate
     }).create().then(function(injury) {
-      AlertBroker.success("Added new injury to "+ $scope.event.selected_player.tickerAndName)
+      AlertBroker.success("Added new injury to "+ $scope.event.player.tickerAndName)
       EventListingService.broadcastItem();
     }, function(err) {
       AlertBroker.error(err.data);
