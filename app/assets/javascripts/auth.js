@@ -14,7 +14,7 @@ angular.module('auth', ['ui.bootstrap'])
         'Accept' : 'application/json',
         'Content-Type' : 'application/json' };
 
-      return $http.post('/login', {user: {login: email, password: password}})
+      return $http.post('/api/login', {user: {login: email, password: password}})
         .then( function(resp) {
           if (resp.data.success) {
             service.currentUser = resp.data.data.username;
@@ -29,7 +29,7 @@ angular.module('auth', ['ui.bootstrap'])
     },
     // logout the current user and redirect
     logout: function(redirectTo) {
-      $http.post('/logout').then(function() {
+      $http.post('/api/logout').then(function() {
         service.currentUser = null;
         redirect(redirectTo);
       });
@@ -42,7 +42,7 @@ angular.module('auth', ['ui.bootstrap'])
       if ( service.isAuthenticated() ) {
         return $q.when(service.currentUser);
       } else {
-        return $http.get('/current-user').then(function(response) {
+        return $http.get('/api/current-user').then(function(response) {
           service.currentUser = response.data.username;
           return service.currentUser;
         });

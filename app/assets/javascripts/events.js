@@ -10,7 +10,7 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 }])
 .factory('EventService', ['railsResourceFactory', function(railsResourceFactory) {
   return railsResourceFactory({
-    url: '/events',
+    url: '/api/events',
     name: 'event',
     responseInterceptors: [function(promise) {
       return promise.then(function(response) {
@@ -23,13 +23,13 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 }])
 .factory('Injury', ['railsResourceFactory', function(railsResourceFactory) {
   return railsResourceFactory({
-    url: '/injuries',
+    url: '/api/injuries',
     name: 'injury'
   });
 }])
 .factory('Player', ['railsResourceFactory', function(railsResourceFactory) {
   return railsResourceFactory({
-    url: '/players',
+    url: '/api/players',
     name: 'player'
   });
 }])

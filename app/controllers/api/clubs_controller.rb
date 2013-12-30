@@ -1,4 +1,4 @@
-class ClubsController < ApplicationController
+class Api::ClubsController < ApplicationController
   def index 
     @clubs = Club.all
     respond_to do |format|

@@ -1,0 +1,5 @@
+.col-md-12(ng-controller="EventListCtrl")
+  .row
+    pagination total-items="totalItems" page="currentPage" max-size="maxSize" on-select-page="goToPage(page)" items-per-page="itemsPerPage"
+  div(ng-repeat="event in events" ng-controller="EventCtrl")
+    ng-include(src="editMode && event.editTemplateUrl || event.templateUrl")

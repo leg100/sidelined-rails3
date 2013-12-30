@@ -1,4 +1,4 @@
-class InjuriesController < ApplicationController
+class Api::InjuriesController < ApplicationController
   before_filter :authenticate_user!, :only => [:create]
 
   def create
