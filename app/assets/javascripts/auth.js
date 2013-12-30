@@ -1,6 +1,6 @@
 // Based loosely around work by Witold Szczerba - https://github.com/witoldsz/angular-http-auth
 angular.module('auth', ['ui.bootstrap'])
-.factory('Session', ['$http', '$q', '$location', '$log', '$modal', function($http, $q, $location, $log, $dialog) {
+.factory('Session', ['$http', '$q', '$location', function($http, $q, $location) {
 
   // redirect to the given url (defaults to '/')
   function redirect(url) {
@@ -10,13 +10,6 @@ angular.module('auth', ['ui.bootstrap'])
 
   // the public api of the service
   var service = {
-    // get the first reason for needing a login
-    //
-    //getLoginReason: function() {
-    //
-    //return queue.retryReason();
-    //
-    //},
     // attempt to authenticate a user by the given email and password
     login: function(email, password) {
       $http.defaults.headers.post = { 
@@ -36,39 +29,32 @@ angular.module('auth', ['ui.bootstrap'])
         });
     },
     // logout the current user and redirect
-    logout: function(redirectto) {
+    logout: function(redirectTo) {
       $http.post('/logout').then(function() {
         service.currentuser = null;
-        redirect(redirectto);
+        redirect(redirectTo);
       });
     },
     doRedirect: function(url) {
       redirect(url);
     },
     // ask the backend to see if a user is already authenticated - this may be from a previous session.
-    requestcurrentuser: function() {
+    requestCurrentUser: function() {
       if ( service.isAuthenticated() ) {
-        console.log("not making http request to /current_user");
-        return $q.when(service.currentuser);
+        return $q.when(service.currentUser);
       } else {
         return $http.get('/current-user').then(function(response) {
-          console.log("making http request to /current_user");
-          service.currentuser = response.data.username;
-          return service.currentuser;
+          service.currentUser = response.data.username;
+          return service.currentUser;
         });
       }
     },
     // information about the current user
-    currentuser: null,
+    currentUser: null,
 
     // is the current user authenticated?
     isAuthenticated: function(){
-      return !!service.currentuser;
-    },
-
-    // is the current user an adminstrator?
-    isadmin: function() {
-      return !!(service.currentuser && service.currentuser.admin);
+      return !!service.currentUser;
     }
   };
 
@@ -77,13 +63,13 @@ angular.module('auth', ['ui.bootstrap'])
 .controller('LoginStatusController', ['$scope', 'Session', function($scope, security) {
   $scope.isAuthenticated = security.isAuthenticated;
   $scope.$watch(function() {
-    return security.currentuser;
-  }, function(currentuser) {
-    $scope.username = currentuser;
+    return security.currentUser;
+  }, function(currentUser) {
+    $scope.username = currentUser;
   });
   $scope.logout = security.logout;
 }])
-.controller('LoginModalController', ['$scope', 'Session', '$modal', 'authService', '$log', function($scope, security, $modal, authService, $log) {
+.controller('LoginModalController', ['$scope', 'Session', '$modal', 'authService', function($scope, security, $modal, authService) {
  
   $scope.open = function() {
     var modalInstance = $modal.open({
@@ -93,7 +79,6 @@ angular.module('auth', ['ui.bootstrap'])
     modalInstance.result.then(function() {
       authService.loginConfirmed();
     }, function() {
-      //queue.cancelAll();
       security.doRedirect();
     });
   }
@@ -102,7 +87,7 @@ angular.module('auth', ['ui.bootstrap'])
     $scope.open();
   });
 }])
-.controller('LoginModalInstanceController', ['$scope', '$modalInstance', 'Session', '$log', 'authService', function($scope, $modalInstance, security, $log, authService) {
+.controller('LoginModalInstanceController', ['$scope', '$modalInstance', 'Session', function($scope, $modalInstance, security) {
   // The model for this form 
   $scope.user = {
     email: 'louisgarman@gmail.com',
@@ -123,8 +108,7 @@ angular.module('auth', ['ui.bootstrap'])
 
     // Try to login
     security.login($scope.user.email, $scope.user.password).then(function(response) {
-      var currentuser = security.requirecurrentuser;
-      $log.info(currentuser);
+      security.requireCurrentUser;
       $modalInstance.close();
     }, function(err) {
       $scope.authError = err;
@@ -136,42 +120,7 @@ angular.module('auth', ['ui.bootstrap'])
   };
  
   $scope.cancel = function() {
-    $log.info("cancelling");
     $modalInstance.dismiss('cancel');
     security.doRedirect();
   };
-}])
-// The loginToolbar directive is a reusable widget that can show login or logout buttons
-// and information the current authenticated user
-.directive('loginToolbar', ['Session', function(Session) {
-  var directive = {
-    templateUrl: '/templates/auth/login.tmpl',
-    restrict: 'E',
-    replace: true,
-    scope: true,
-    link: function($scope, $element, $attrs, $controller) {
-      $scope.isAuthenticated = Session.isAuthenticated;
-      $scope.login = Session.showLogin();
-      $scope.logout = Session.logout;
-      $scope.$watch(function() {
-        return Session.currentUser;
-      }, function(currentUser) {
-        $scope.currentUser = currentUser;
-      });
-    }
-  };
-  return directive;
-}])
-.controller('LoginCtrl', ['$scope', 'Session', '$log', function($scope, Session, $log) {
-  // The model for this form
-  $scope.user = {};
-
-  // Any error message from failing to login
-  $scope.authError = null;
-
-  // The reason that we are being asked to login - for instance because we tried to access something to which we are not authorized
-  // We could do something diffent for each reason here but to keep it simple...
-  Session.requestcurrentuser().then(function(userInfo) {
-    $scope.status = userInfo;
-  });
 }]);
