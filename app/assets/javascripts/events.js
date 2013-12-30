@@ -33,7 +33,7 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
     name: 'player'
   });
 }])
-.controller('InjuryEditCtrl', ['$scope', 'Player', 'Injury', 'EventListingService', 'AlertBroker', function($scope, Player, Injury, EventListingService, AlertBroker) {
+.controller('InjuryEditCtrl', ['$scope', 'Player', 'Injury', 'EventListingService', 'AlertBroker', 'limitToFilter', '$filter', function($scope, Player, Injury, EventListingService, AlertBroker, limitToFilter, $filter) {
   // init params
   $scope.type = 'injury';
 
@@ -55,9 +55,13 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
   };
 
   // populate typeahead
-  Player.query({typeahead: true}).then(function(resp) {
-    $scope.players = resp;
-  });
+  $scope.getPlayers = function(substring) {
+    return Player.query(
+      {typeahead: true}
+    ).then(function(resp) {
+      return limitToFilter( $filter('filter')(resp, substring), 8);
+    });
+  };
 
   // trigger update
   $scope.add = function() {
