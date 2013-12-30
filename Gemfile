@@ -10,6 +10,7 @@ gem 'mongoid_slug'
 gem 'coffee-rails'
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 gem 'kaminari'
+gem "bower-rails", "~> 0.6.1"
 
 group :development, :test do
   gem "rspec-rails"

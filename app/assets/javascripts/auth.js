@@ -1,6 +1,6 @@
 // Based loosely around work by Witold Szczerba - https://github.com/witoldsz/angular-http-auth
 angular.module('auth', ['ui.bootstrap'])
-.factory('authService', ['$http', '$q', 'securityRetryQueue', '$location', '$log', '$modal', function($http, $q, queue, $location, $log, $dialog) {
+.factory('Session', ['$http', '$q', '$location', '$log', '$modal', function($http, $q, $location, $log, $dialog) {
 
   // redirect to the given url (defaults to '/')
   function redirect(url) {
@@ -11,9 +11,12 @@ angular.module('auth', ['ui.bootstrap'])
   // the public api of the service
   var service = {
     // get the first reason for needing a login
-    getLoginReason: function() {
-      return queue.retryReason();
-    },
+    //
+    //getLoginReason: function() {
+    //
+    //return queue.retryReason();
+    //
+    //},
     // attempt to authenticate a user by the given email and password
     login: function(email, password) {
       $http.defaults.headers.post = { 
@@ -71,7 +74,7 @@ angular.module('auth', ['ui.bootstrap'])
 
   return service;
 }])
-.controller('LoginStatusController', ['$scope', 'authService', function($scope, security) {
+.controller('LoginStatusController', ['$scope', 'Session', function($scope, security) {
   $scope.isAuthenticated = security.isAuthenticated;
   $scope.$watch(function() {
     return security.currentuser;
@@ -80,22 +83,26 @@ angular.module('auth', ['ui.bootstrap'])
   });
   $scope.logout = security.logout;
 }])
-.controller('LoginModalController', ['$scope', 'authService', '$modal', '$log', 'securityRetryQueue', function($scope, security, $modal, $log, queue) {
-
+.controller('LoginModalController', ['$scope', 'Session', '$modal', 'authService', '$log', function($scope, security, $modal, authService, $log) {
+ 
   $scope.open = function() {
     var modalInstance = $modal.open({
       templateUrl: '/templates/auth/form.tmpl', 
       controller: 'LoginModalInstanceController'
     });
     modalInstance.result.then(function() {
-      queue.retryAll();
+      authService.loginConfirmed();
     }, function() {
-      queue.cancelAll();
+      //queue.cancelAll();
       security.doRedirect();
     });
   }
+
+  $scope.$on('event:auth-loginRequired', function() {
+    $scope.open();
+  });
 }])
-.controller('LoginModalInstanceController', ['$scope', '$modalInstance', 'authService', '$log', function($scope, $modalInstance, security, $log) {
+.controller('LoginModalInstanceController', ['$scope', '$modalInstance', 'Session', '$log', 'authService', function($scope, $modalInstance, security, $log, authService) {
   // The model for this form 
   $scope.user = {
     email: 'louisgarman@gmail.com',
@@ -107,12 +114,7 @@ angular.module('auth', ['ui.bootstrap'])
 
   // The reason that we are being asked to login - for instance because we tried to access something to which we are not authorized
   // We could do something diffent for each reason here but to keep it simple...
-  $scope.authReason = null;
-  if ( security.getLoginReason() ) {
-    $scope.authReason = ( security.isAuthenticated() ) ?
-      'not authorized' :
-      'not authenticated';
-  }
+  $scope.authReason = 'not authenticated';
 
   // Attempt to authenticate the user specified in the form's model
   $scope.login = function() {
@@ -141,18 +143,18 @@ angular.module('auth', ['ui.bootstrap'])
 }])
 // The loginToolbar directive is a reusable widget that can show login or logout buttons
 // and information the current authenticated user
-.directive('loginToolbar', ['authService', function(authService) {
+.directive('loginToolbar', ['Session', function(Session) {
   var directive = {
     templateUrl: '/templates/auth/login.tmpl',
     restrict: 'E',
     replace: true,
     scope: true,
     link: function($scope, $element, $attrs, $controller) {
-      $scope.isAuthenticated = authService.isAuthenticated;
-      $scope.login = authService.showLogin();
-      $scope.logout = authService.logout;
+      $scope.isAuthenticated = Session.isAuthenticated;
+      $scope.login = Session.showLogin();
+      $scope.logout = Session.logout;
       $scope.$watch(function() {
-        return authService.currentUser;
+        return Session.currentUser;
       }, function(currentUser) {
         $scope.currentUser = currentUser;
       });
@@ -160,7 +162,7 @@ angular.module('auth', ['ui.bootstrap'])
   };
   return directive;
 }])
-.controller('LoginCtrl', ['$scope', 'authService', '$log', function($scope, authService, $log) {
+.controller('LoginCtrl', ['$scope', 'Session', '$log', function($scope, Session, $log) {
   // The model for this form
   $scope.user = {};
 
@@ -169,73 +171,7 @@ angular.module('auth', ['ui.bootstrap'])
 
   // The reason that we are being asked to login - for instance because we tried to access something to which we are not authorized
   // We could do something diffent for each reason here but to keep it simple...
-  authService.requestcurrentuser().then(function(userInfo) {
+  Session.requestcurrentuser().then(function(userInfo) {
     $scope.status = userInfo;
   });
-}])
-// This is a generic retry queue for security failures.  Each item is expected to expose two functions: retry and cancel.
-.factory('securityRetryQueue', ['$q', '$log', function($q, $log) {
-  var retryQueue = [];
-  var service = {
-    // The security service puts its own handler in here!
-    onItemAddedCallbacks: [],
-    
-    hasMore: function() {
-      return retryQueue.length > 0;
-    },
-    push: function(retryItem) {
-      retryQueue.push(retryItem);
-      // Call all the onItemAdded callbacks
-      angular.forEach(service.onItemAddedCallbacks, function(cb) {
-        try {
-          cb(retryItem);
-        } catch(e) {
-          $log.error('securityRetryQueue.push(retryItem): callback threw an error' + e);
-        }
-      });
-    },
-    pushRetryFn: function(reason, retryFn) {
-      // The reason parameter is optional
-      if ( arguments.length === 1) {
-        retryFn = reason;
-        reason = undefined;
-      }
-
-      // The deferred object that will be resolved or rejected by calling retry or cancel
-      var deferred = $q.defer();
-      var retryItem = {
-        reason: reason,
-        retry: function() {
-          // Wrap the result of the retryFn into a promise if it is not already
-          $q.when(retryFn()).then(function(value) {
-            // If it was successful then resolve our deferred
-            deferred.resolve(value);
-          }, function(value) {
-            // Othewise reject it
-            deferred.reject(value);
-          });
-        },
-        cancel: function() {
-          // Give up on retrying and reject our deferred
-          deferred.reject();
-        }
-      };
-      service.push(retryItem);
-      return deferred.promise;
-    },
-    retryReason: function() {
-      return service.hasMore() && retryQueue[0].reason;
-    },
-    cancelAll: function() {
-      while(service.hasMore()) {
-        retryQueue.shift().cancel();
-      }
-    },
-    retryAll: function() {
-      while(service.hasMore()) {
-        retryQueue.shift().retry();
-      }
-    }
-  };
-  return service;
 }]);

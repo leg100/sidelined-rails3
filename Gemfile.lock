@@ -46,6 +46,7 @@ GEM
     arel (3.0.3)
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
+    bower-rails (0.6.1)
     builder (3.0.4)
     capybara (2.2.0)
       mime-types (>= 1.16)
@@ -236,6 +237,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers!
+  bower-rails (~> 0.6.1)
   capybara
   coffee-rails
   database_cleaner

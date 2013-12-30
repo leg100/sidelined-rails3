@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  before_filter :authenticate_user!, :only => [:create, :update, :destroy]
   before_filter :require_params, :only => [ :index ]
 
   def create

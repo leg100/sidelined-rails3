@@ -1,0 +1,3 @@
+assets_path "assets/javascripts"
+
+asset "angular-http-auth"

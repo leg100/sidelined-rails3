@@ -1,4 +1,5 @@
 class InjuriesController < ApplicationController
+  before_filter :authenticate_user!, :only => [:create]
 
   def create
     # workaround for https://github.com/aq1018/mongoid-history/issues/26
