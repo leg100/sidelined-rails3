@@ -2,7 +2,6 @@
 angular.module('auth', ['ui.bootstrap'])
 .factory('Session', ['$http', '$q', '$location', function($http, $q, $location) {
 
-  // redirect to the given url (defaults to '/')
   function redirect(url) {
     url = url || '/';
     $location.path(url);
@@ -10,11 +9,11 @@ angular.module('auth', ['ui.bootstrap'])
 
   // the public api of the service
   var service = {
-    // attempt to authenticate a user by the given email and password
     login: function(email, password) {
       $http.defaults.headers.post = { 
         'Accept' : 'application/json',
         'Content-Type' : 'application/json' };
+
       return $http.post('/login', {user: {login: email, password: password}})
         .then( function(resp) {
           if (resp.data.success) {
@@ -49,10 +48,8 @@ angular.module('auth', ['ui.bootstrap'])
         });
       }
     },
-    // information about the current user
     currentUser: null,
 
-    // is the current user authenticated?
     isAuthenticated: function(){
       return !!service.currentUser;
     }
@@ -88,25 +85,18 @@ angular.module('auth', ['ui.bootstrap'])
   });
 }])
 .controller('LoginModalInstanceController', ['$scope', '$modalInstance', 'Session', function($scope, $modalInstance, security) {
-  // The model for this form 
   $scope.user = {
     email: 'louisgarman@gmail.com',
     password: 'j843874q'
   };
 
-  // Any error message from failing to login
   $scope.authError = null;
-
-  // The reason that we are being asked to login - for instance because we tried to access something to which we are not authorized
-  // We could do something diffent for each reason here but to keep it simple...
   $scope.authReason = 'not authenticated';
 
-  // Attempt to authenticate the user specified in the form's model
   $scope.login = function() {
     // Clear any previous security errors
     $scope.authError = null;
 
-    // Try to login
     security.login($scope.user.email, $scope.user.password).then(function(response) {
       security.requireCurrentUser;
       $modalInstance.close();
