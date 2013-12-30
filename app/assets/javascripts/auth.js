@@ -17,7 +17,7 @@ angular.module('auth', ['ui.bootstrap'])
       return $http.post('/login', {user: {login: email, password: password}})
         .then( function(resp) {
           if (resp.data.success) {
-            service.currentuser = resp.data.data.username;
+            service.currentUser = resp.data.data.username;
             return resp.data.data.username;
           } else {
             // reject promise with error message
@@ -30,7 +30,7 @@ angular.module('auth', ['ui.bootstrap'])
     // logout the current user and redirect
     logout: function(redirectTo) {
       $http.post('/logout').then(function() {
-        service.currentuser = null;
+        service.currentUser = null;
         redirect(redirectTo);
       });
     },
@@ -68,10 +68,15 @@ angular.module('auth', ['ui.bootstrap'])
 }])
 .controller('LoginModalController', ['$scope', 'Session', '$modal', 'authService', function($scope, security, $modal, authService) {
  
-  $scope.open = function() {
+  $scope.open = function(reason) {
     var modalInstance = $modal.open({
       templateUrl: '/templates/auth/form.tmpl', 
-      controller: 'LoginModalInstanceController'
+      controller: 'LoginModalInstanceController',
+      resolve: {
+        reason: function() {
+          return (reason || null);
+        }
+      }
     });
     modalInstance.result.then(function() {
       authService.loginConfirmed();
@@ -81,24 +86,23 @@ angular.module('auth', ['ui.bootstrap'])
   }
 
   $scope.$on('event:auth-loginRequired', function() {
-    $scope.open();
+    $scope.open('not authenticated');
   });
 }])
-.controller('LoginModalInstanceController', ['$scope', '$modalInstance', 'Session', function($scope, $modalInstance, security) {
+.controller('LoginModalInstanceController', ['$scope', '$modalInstance', 'Session', 'reason', function($scope, $modalInstance, security, reason) {
   $scope.user = {
     email: 'louisgarman@gmail.com',
     password: 'j843874q'
   };
 
   $scope.authError = null;
-  $scope.authReason = 'not authenticated';
+  $scope.authReason = reason;
 
   $scope.login = function() {
     // Clear any previous security errors
     $scope.authError = null;
 
     security.login($scope.user.email, $scope.user.password).then(function(response) {
-      security.requireCurrentUser;
       $modalInstance.close();
     }, function(err) {
       $scope.authError = err;
