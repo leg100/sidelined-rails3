@@ -28,6 +28,7 @@ SidelinedRails3::Application.routes.draw do
   resource :angular_root, :only => [:show]
 
   devise_for :user
-  root :to => 'angular_root#show'
-  get '/injuries' => 'angular_root#show'
+
+  # send everything else to angular app
+  match '*pages' => 'angular_root#show'
 end
