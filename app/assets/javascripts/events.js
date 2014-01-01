@@ -24,7 +24,14 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
 .factory('Injury', ['railsResourceFactory', function(railsResourceFactory) {
   return railsResourceFactory({
     url: '/api/injuries',
-    name: 'injury'
+    name: 'injury',
+    responseInterceptors: [function(promise) {
+      return promise.then(function(response) {
+        if (response.originalData.meta)
+          response.data.$total = response.originalData.meta.total;
+        return response;
+      });
+    }]
   });
 }])
 .factory('Player', ['railsResourceFactory', function(railsResourceFactory) {
@@ -103,39 +110,36 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
     });
   };
 }])
-.controller('EventListCtrl', ['$scope', 'EventService', 'EventListingService', 'AlertBroker', function($scope, EventService, EventListingService, AlertBroker) {
+.controller('EventListCtrl', ['$scope', 'EventService', 'EventListingService', 'AlertBroker', 'eventItems', '$routeParams', '$location', function($scope, EventService, EventListingService, AlertBroker, eventItems, $routeParams, $location) {
   $scope.itemsPerPage = 100;
-
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'shortDate'];
-  $scope.format = $scope.formats[0];
-
-  var query = function(page) {
-    EventService.query({page: page}).then(function(resp){
-      $scope.events = resp;
-      $scope.currentPage = page;
-      $scope.totalItems = resp.$total;
-      $scope.maxSize = 10;
-    });
-  };
+  $scope.format = 'dd-MMMM-yyyy';
+  $scope.events = eventItems;
+  $scope.currentPage = $routeParams.page || 1;
+  $scope.totalItems = eventItems.$total;
+  $scope.maxSize = 10;
 
   $scope.$on('handleBroadcast', function() {
-    query(1);
+    EventService.query({page: 1})
+      .then(function(resp) {
+         $scope.events = resp;
+      });
   });
 
   $scope.removeEvent = function(index) {
     var event = $scope.events[index];
 
     event.remove().then(function(resp){
-      query(1);
-      AlertBroker.success("Removed event "+ resp.id) 
+      EventService.query({page: 1})
+        .then(function(resp) {
+           $scope.events = resp;
+        });
+      AlertBroker.success("Removed event "+ resp.id);
     });
   };
 
   $scope.goToPage = function(page) {
-    query(page);
+    $location.path('/all/'+ page);
   };
-
-  query(1);
 }])
 .controller('EventCtrl', ['$scope', 'EventService', 'EventListingService', 'AlertBroker', function($scope, EventService, EventListingService, AlertBroker) {
   $scope.editMode = false;

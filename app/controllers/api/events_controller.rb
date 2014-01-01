@@ -1,6 +1,5 @@
 class Api::EventsController < ApplicationController
   before_filter :authenticate_user!, :only => [:create, :update, :destroy]
-  before_filter :require_params, :only => [ :index ]
 
   def create
     # workaround for https://github.com/aq1018/mongoid-history/issues/26
@@ -35,9 +34,16 @@ class Api::EventsController < ApplicationController
     render json: @event
   end
 
+  def show
+    @event = Event.find(params[:id])
+
+    render json: @event
+  end
+
   def index
+    page = params[:page] || 1
     @events = Event.includes(:modifier).desc(:updated_at)
-      .page(params[:page])
+      .page(page)
 
     respond_to do |format|
       format.html # index.html.erb

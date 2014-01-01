@@ -16,6 +16,7 @@ SidelinedRails3::Application.routes.draw do
     resources :events
     resources :injuries, :only => [:create]
     resources :fixtures
+    resources :history_trackers
    
     devise_scope :user do
       get '/current-user' => 'users/sessions#get_current_user'

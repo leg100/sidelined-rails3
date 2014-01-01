@@ -12,12 +12,16 @@ html
         .navbar-header
           a.navbar-brand href="/" sidelined.io
         .navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li
+              a href="/all/1" Activity
+            li
+              a href="/revisions" Revisions
+            li
+              a href="/injuries" Injuries
           = render 'partials/login'
     .container
       .row
         .col-md-6(ng-controller="AlertCtrl")
           alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)" {{alert.msg}}
-      .row
-        = render 'partials/event_form'
-      .row(ng-view)
-
+      ng-view

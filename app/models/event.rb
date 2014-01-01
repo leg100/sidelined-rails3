@@ -14,6 +14,10 @@ class Event
                   :track_create   =>  true,
                   :track_update   =>  true,
                   :track_destroy  =>  true
+
+  def revisions
+    HistoryTracker.where(:association_chain.elem_match => {id: id})
+  end
 end
 
 class Fixture < Event
