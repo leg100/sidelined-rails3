@@ -32,4 +32,5 @@ SidelinedRails3::Application.routes.draw do
 
   # send everything else to angular app
   match '*pages' => 'angular_root#show'
+  root to: 'angular_root#show'
 end
