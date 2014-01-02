@@ -70,7 +70,7 @@ angular.module('auth', ['ui.bootstrap'])
  
   $scope.open = function(reason) {
     var modalInstance = $modal.open({
-      templateUrl: '/templates/auth/form.tmpl', 
+      templateUrl: '/templates/auth/modal.tmpl', 
       controller: 'LoginModalInstanceController',
       resolve: {
         reason: function() {

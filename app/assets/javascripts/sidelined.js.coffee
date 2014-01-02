@@ -2,7 +2,7 @@ sidelinedApp = angular.module('sidelinedApp', ['ngRoute', 'auth', 'events', 'rev
 .config(($routeProvider) ->
   $routeProvider
     .when('/all/:page', {
-      templateUrl: '/templates/events/all.tmpl',
+      templateUrl: '/templates/pages/all.tmpl',
       controller: 'EventListCtrl',
       resolve: {
         eventItems: ($route, EventService) ->
@@ -10,15 +10,15 @@ sidelinedApp = angular.module('sidelinedApp', ['ngRoute', 'auth', 'events', 'rev
       }
     })
     .when('/events', {
-      templateUrl: '/templates/events/all.tmpl',
+      templateUrl: '/templates/pages/all.tmpl',
       controller: 'EventListCtrl'
     })
     .when('/revisions', {
-      templateUrl: '/templates/events/revisions.tmpl',
+      templateUrl: '/templates/pages/revisions.tmpl',
       controller: 'RevisionListCtrl'
     })
     .when('/injuries', {
-      templateUrl: '/templates/events/all.tmpl',
+      templateUrl: '/templates/pages/all.tmpl',
       controller: 'EventListCtrl'
       resolve: {
         injuryItems: ($route, Injury) ->
