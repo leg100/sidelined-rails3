@@ -119,7 +119,7 @@ angular.module('events', ['rails', 'ui.bootstrap', 'alerts'])
   $scope.maxSize = 10;
 
   $scope.$on('handleBroadcast', function() {
-    EventService.query({page: 1})
+    EventService.query({page: 1, _type: 'Injury'})
       .then(function(resp) {
          $scope.events = resp;
       });

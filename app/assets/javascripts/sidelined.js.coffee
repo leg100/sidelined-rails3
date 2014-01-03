@@ -6,7 +6,7 @@ sidelinedApp = angular.module('sidelinedApp', ['ngRoute', 'auth', 'events', 'rev
       controller: 'EventListCtrl',
       resolve: {
         eventItems: ($route, EventService) ->
-          EventService.query({page: $route.current.params.page}).then((resp) -> resp)
+          EventService.query({_type: 'Injury', page: $route.current.params.page}).then((resp) -> resp)
       }
     })
     .when('/events', {

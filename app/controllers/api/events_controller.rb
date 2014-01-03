@@ -42,8 +42,14 @@ class Api::EventsController < ApplicationController
 
   def index
     page = params[:page] || 1
-    @events = Event.includes(:modifier).desc(:updated_at)
-      .page(page)
+    if params[:_type]
+      @events = Event.includes(:modifier).where(_type: params[:_type])
+        .desc(:updated_at)
+        .page(page)
+    else
+      @events = Event.includes(:modifier).desc(:updated_at)
+        .page(page)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
