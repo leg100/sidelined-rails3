@@ -1,0 +1,29 @@
+.row
+  .col-xs-3.injury-form-container
+    = render 'partials/injury_form'
+  .col-xs-9.injury-container
+    .row
+      .col-xs-8.alert-container(ng-controller="AlertCtrl")
+        alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)" {{alert.msg}}
+    .row
+      .col-xs-12
+        h3 Injury
+        dl.dl-horizontal
+          dt Status 
+          dd 
+            | {{injury._type}}
+          dt Player 
+          dd 
+            | {{injury.player.longName}}
+          dt Return date 
+          dd 
+            | {{injury.returnDate|date:'dd-MMMM-yyyy'||'Unknown'}}
+          dt Quote
+          dd 
+            | {{injury.quote}}
+          dt Source
+          dd 
+            | {{injury.source}}
+          dt Last update
+          dd 
+            | {{injury.updatedAt|date:'MMM d, y h:mm:ss a'}}

@@ -47,6 +47,7 @@ class Injury < Event
   belongs_to :player
 
   field :source, type: String
+  field :quote, type: String
   field :return_date, type: Date
 
   validate :return_date_cannot_be_in_the_past
@@ -64,6 +65,16 @@ class Injury < Event
       errors.add(:return_date, "can't be in the past")
     end
   end
+end
+
+class Doubt < Injury
+  field :certainty, type: Integer
+end
+
+class Confirmed < Injury
+end
+
+class Recovered < Injury
 end
 
 class Transfer < Event

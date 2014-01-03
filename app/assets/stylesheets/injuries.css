@@ -2,3 +2,76 @@
   Place all the styles related to the matching controller here.
   They will automatically be included in application.css.
 */
+.alert {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+.alert-container {
+  margin-left: 28px;
+}
+.pagination {
+  margin-left: 43px;
+}
+.injuries-form-container {
+}
+.injury-container {
+  margin-left: 0px;
+}
+.injuries-container {
+  margin-left: -40px;
+}
+.team-colors {
+  padding: 5px 5px 0px 0px;
+  color: white;
+  background-color: #FF0000;
+  height: 100%;
+  position: absolute;
+}
+.injury {
+  padding-right: 5px;
+}
+.widget {
+  padding: 0px 15px 0px 15px;
+  margin: 0px 10px 10px 10px;
+}
+.ticker h4 {
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+.player-name h5 {
+  margin-top: 0px;
+}
+.player-name small {
+  font-size: 11px;
+  color: white;
+}
+.event {
+  padding: 5px 5px 5px 10px;
+  background-color: #FFEBE6;
+}
+.quote {
+  margin: 5px 10px 0px 0px;
+}
+.micro-button {
+  margin-left: 5px;
+}
+.out {
+  padding-left: 1px;
+}
+.ago {
+  padding-right: 10px;
+  position: absolute;
+  right: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-left: 0px;
+}
+.margin {
+  position: absolute !important;
+  height: 100%;
+  padding: 0px 10px 5px 5px;
+  border-right-width: 5px;
+  border-right-style: solid;
+  border-right-color: white;
+}

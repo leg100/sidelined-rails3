@@ -16,5 +16,6 @@
 //= require ui-bootstrap-tpls-0.9.0
 //= require angularjs-rails-resource
 //= require bower_components/angular-http-auth/src/http-auth-interceptor
+//= require bower_components/angular-ui-router/release/angular-ui-router.js
 //= require_tree .
 //= require sidelined

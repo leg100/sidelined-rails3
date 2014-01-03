@@ -14,7 +14,7 @@ SidelinedRails3::Application.routes.draw do
     end
     resources :clubs
     resources :events
-    resources :injuries, :only => [:create]
+    resources :injuries
     resources :fixtures
     resources :history_trackers
    

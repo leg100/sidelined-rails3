@@ -10,15 +10,28 @@
  *
  *= require_self
  *= require bootstrap
+ *= require_tree
 */
 
 /* http://getbootstrap.com/components/#navbar-component-alignment */
-body { padding-top: 60px; }
-
-.myPadding {
-  padding-left: 5px;
-  padding-right: 5px;
+* {
+  box-sizing: border-box;
+  outline: 1px solid #000;
 }
+body { padding-top: 60px; }
+.logo {
+  color: red;
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  float: left;
+  padding: 15px 15px;
+  line-height: 20px;
+  margin-left: -15px;
+}
+.container {
+  width: 1170px !important;
+}
+
 
 /* Override Bootstrap 3 font locations */
 @font-face {

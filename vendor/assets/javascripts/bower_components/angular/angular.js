@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.7-build.2029+sha.80e7a45
+ * @license AngularJS v1.2.7-build.2045+sha.6a6f71f
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -68,7 +68,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.7-build.2029+sha.80e7a45/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.7-build.2045+sha.6a6f71f/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -1831,7 +1831,7 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.7-build.2029+sha.80e7a45',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.7-build.2045+sha.6a6f71f',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
   dot: 7,
@@ -3663,6 +3663,11 @@ function createInjector(modulesToLoad) {
           path.unshift(serviceName);
           cache[serviceName] = INSTANTIATING;
           return cache[serviceName] = factory(serviceName);
+        } catch (err) {
+          if (cache[serviceName] === INSTANTIATING) {
+            delete cache[serviceName];
+          }
+          throw err;
         } finally {
           path.shift();
         }
@@ -4197,8 +4202,9 @@ function Browser(window, document, $log, $sniffer) {
    * @param {boolean=} replace Should new url replace current history record ?
    */
   self.url = function(url, replace) {
-    // Android Browser BFCache causes location reference to become stale.
+    // Android Browser BFCache causes location, history reference to become stale.
     if (location !== window.location) location = window.location;
+    if (history !== window.history) history = window.history;
 
     // setter
     if (url) {
@@ -4250,7 +4256,7 @@ function Browser(window, document, $log, $sniffer) {
    * @description
    * Register callback function that will be called, when url changes.
    *
-   * It's only called when the url is changed by outside of angular:
+   * It's only called when the url is changed from outside of angular:
    * - user types different url into address bar
    * - user clicks on history (forward/back) button
    * - user clicks on a link
@@ -4292,7 +4298,7 @@ function Browser(window, document, $log, $sniffer) {
   /**
    * @name ng.$browser#baseHref
    * @methodOf ng.$browser
-   * 
+   *
    * @description
    * Returns current <base href>
    * (always relative - without domain)
@@ -4301,7 +4307,7 @@ function Browser(window, document, $log, $sniffer) {
    */
   self.baseHref = function() {
     var href = baseElement.attr('href');
-    return href ? href.replace(/^https?\:\/\/[^\/]*/, '') : '';
+    return href ? href.replace(/^(https?\:)?\/\/[^\/]*/, '') : '';
   };
 
   //////////////////////////////////////////////////////////////
@@ -4323,13 +4329,13 @@ function Browser(window, document, $log, $sniffer) {
    * It is not meant to be used directly, use the $cookie service instead.
    *
    * The return values vary depending on the arguments that the method was called with as follows:
-   * 
+   *
    * - cookies() -> hash of all cookies, this is NOT a copy of the internal state, so do not modify
    *   it
    * - cookies(name, value) -> set name to value, if value is undefined delete the cookie
    * - cookies(name) -> the same as (name, undefined) == DELETES (no one calls it right now that
    *   way)
-   * 
+   *
    * @returns {Object} Hash of all cookies (if called without any parameter)
    */
   self.cookies = function(name, value) {
@@ -4707,7 +4713,7 @@ function $TemplateCacheProvider() {
  * @function
  *
  * @description
- * Compiles a piece of HTML string or DOM into a template and produces a template function, which
+ * Compiles an HTML string or DOM into a template and produces a template function, which
  * can then be used to link {@link ng.$rootScope.Scope `scope`} and the template together.
  *
  * The compilation is a process of walking the DOM tree and matching DOM elements to
@@ -7935,6 +7941,11 @@ function createHttpBackend($browser, XHR, $browserDefer, callbacks, rawDocument)
       // always async
       xhr.onreadystatechange = function() {
         if (xhr.readyState == 4) {
+          // onreadystatechange might by called multiple times
+          // with readyState === 4 on mobile webkit caused by
+          // xhrs that are resolved while the app is in the background (see #5426).
+          xhr.onreadystatechange = undefined;
+
           var responseHeaders = null,
               response = null;
 
@@ -9181,16 +9192,17 @@ function $LocationProvider(){
     // update $location when $browser url changes
     $browser.onUrlChange(function(newUrl) {
       if ($location.absUrl() != newUrl) {
-        if ($rootScope.$broadcast('$locationChangeStart', newUrl,
-                                  $location.absUrl()).defaultPrevented) {
-          $browser.url($location.absUrl());
-          return;
-        }
         $rootScope.$evalAsync(function() {
           var oldUrl = $location.absUrl();
 
           $location.$$parse(newUrl);
-          afterLocationChange(oldUrl);
+          if ($rootScope.$broadcast('$locationChangeStart', newUrl,
+                                    oldUrl).defaultPrevented) {
+            $location.$$parse(oldUrl);
+            $browser.url(oldUrl);
+          } else {
+            afterLocationChange(oldUrl);
+          }
         });
         if (!$rootScope.$$phase) $rootScope.$digest();
       }
@@ -11520,6 +11532,7 @@ function $RootScopeProvider(){
 
         return function() {
           arrayRemove(array, watcher);
+          lastDirtyWatch = null;
         };
       },
 
@@ -16006,9 +16019,13 @@ function textInputType(scope, element, attr, ctrl, $sniffer, $browser) {
     }
 
     if (ctrl.$viewValue !== value) {
-      scope.$apply(function() {
+      if (scope.$$phase) {
         ctrl.$setViewValue(value);
-      });
+      } else {
+        scope.$apply(function() {
+          ctrl.$setViewValue(value);
+        });
+      }
     }
   };
 
@@ -19087,7 +19104,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
     $$tlb: true,
     link: function($scope, $element, $attr, ctrl, $transclude){
         var expression = $attr.ngRepeat;
-        var match = expression.match(/^\s*(.+)\s+in\s+([\r\n\s\S]*?)\s*(\s+track\s+by\s+(.+)\s*)?$/),
+        var match = expression.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/),
           trackByExp, trackByExpGetter, trackByIdExpFn, trackByIdArrayFn, trackByIdObjFn,
           lhs, rhs, valueIdentifier, keyIdentifier,
           hashFnLocals = {$id: hashKey};
@@ -19099,7 +19116,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
 
         lhs = match[1];
         rhs = match[2];
-        trackByExp = match[4];
+        trackByExp = match[3];
 
         if (trackByExp) {
           trackByExpGetter = $parse(trackByExp);

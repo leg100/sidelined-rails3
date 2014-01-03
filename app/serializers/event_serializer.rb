@@ -1,5 +1,5 @@
 class EventSerializer < ActiveModel::Serializer
-  attributes :id, :version, :_type, :template_url, :edit_template_url, :revisions
+  attributes :id, :version, :_type, :template_url, :edit_template_url, :revisions, :updated_at
   has_one :modifier
 
   def template_url

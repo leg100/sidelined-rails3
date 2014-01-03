@@ -1,33 +1,35 @@
-sidelinedApp = angular.module('sidelinedApp', ['ngRoute', 'auth', 'events', 'revisions', 'alerts', 'http-auth-interceptor'])
-.config(($routeProvider) ->
-  $routeProvider
-    .when('/all/:page', {
-      templateUrl: '/templates/pages/all.tmpl',
-      controller: 'EventListCtrl',
-      resolve: {
-        eventItems: ($route, EventService) ->
-          EventService.query({_type: 'Injury', page: $route.current.params.page}).then((resp) -> resp)
-      }
-    })
-    .when('/events', {
-      templateUrl: '/templates/pages/all.tmpl',
-      controller: 'EventListCtrl'
-    })
-    .when('/revisions', {
-      templateUrl: '/templates/pages/revisions.tmpl',
-      controller: 'RevisionListCtrl'
-    })
-    .when('/injuries', {
-      templateUrl: '/templates/pages/all.tmpl',
-      controller: 'EventListCtrl'
-      resolve: {
-        injuryItems: ($route, Injury) ->
-          Injury.query({page: $route.current.params.page}).then((resp) -> resp)
-      }
-    })
-    .otherwise({redirectTo: '/all/1'})
-).config(($locationProvider) ->
+sidelinedApp = angular.module('sidelinedApp', ['ui.router', 'auth', 'injuries', 'alerts', 'http-auth-interceptor'])
+.config(($locationProvider, $stateProvider, $urlRouterProvider) ->
   $locationProvider.html5Mode(true).hashPrefix('!')
+  $urlRouterProvider.otherwise("/injuries")
+  $stateProvider
+    .state("injuries", {
+      url: "/injuries{trailing:\/?}",
+      templateUrl: "/templates/pages/all.tmpl",
+      controller: 'InjuryListCtrl',
+      resolve: {
+        action: (() ->  
+          'Add'
+        ),
+        injuries: (Injury) ->
+          Injury.query({_type: 'Injury'})
+      }
+    })
+    .state("injury", {
+      url: "/injuries/:id",
+      templateUrl: "/templates/pages/injury.tmpl",
+      controller: (($scope, injury, action) ->
+        $scope.injury = injury
+        $scope.action = action
+      ),
+      resolve: {
+        action: (() ->  
+          'Update'
+        ),
+        injury: (Injury, $stateParams) ->
+          Injury.get($stateParams.id)
+      }
+    })
 ).run((Session) ->
   Session.requestCurrentUser()
 )
