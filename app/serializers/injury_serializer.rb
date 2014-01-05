@@ -1,5 +1,5 @@
 class InjurySerializer < EventSerializer
-  attributes :source, :return_date, :quote
+  attributes :source, :return_date, :quote, :status
   has_one :player
 
   def template_url

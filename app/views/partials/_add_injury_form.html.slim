@@ -1,9 +1,9 @@
-form(novalidate name="form" ng-controller="InjuryEditCtrl")
+form(novalidate name="form" ng-controller="InjuryAddCtrl")
   .form-group
-    select.form-control(ng-model="injury.type" required)
-      option value="injured" ng-selected="injury.type=='injured'" Injured
-      option value="doubt" ng-selected="injury.type=='doubt'" Doubt
-      option value="recovered" ng-selected="injury.type=='recovered'" Recovered
+    select.form-control(ng-model="injury.status" required)
+      option value="confirmed" ng-selected="injury.status=='confirmed'" Confirmed
+      option value="doubt" ng-selected="injury.status=='doubt'" Doubt
+      option value="recovered" ng-selected="injury.status=='recovered'" Recovered
   .form-group
     input.form-control(name="player" autofocus type="text" ng-model="injury.player" typeahead="player as player.tickerAndName for player in getPlayers($viewValue)" placeholder="Player" ng-required="true" ng-disabled="disabled()")
   .form-group
@@ -13,4 +13,4 @@ form(novalidate name="form" ng-controller="InjuryEditCtrl")
   .form-group
     input.form-control(type="text" ng-model="injury.source" placeholder="News source")
   .form-group
-    button.btn.btn-default(ng-click="submit()" ng-disabled="!canSave()") {{capitalizedAction()}} Injury
+    button.btn.btn-primary(ng-click="add()" ng-disabled="!canSave()") Add {{type}}

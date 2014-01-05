@@ -9,22 +9,30 @@ sidelinedApp = angular.module('sidelinedApp', ['ui.router', 'auth', 'injuries', 
       controller: 'InjuryListCtrl',
       resolve: {
         action: (() ->  
-          'Add'
+          'add'
         ),
         injuries: (Injury) ->
-          Injury.query({_type: 'Injury'})
+          Injury.query()
       }
     })
     .state("injury", {
       url: "/injuries/:id",
       templateUrl: "/templates/pages/injury.tmpl",
-      controller: (($scope, injury, action) ->
-        $scope.injury = injury
+      controller: (($scope, $state, action, injury) ->
         $scope.action = action
+        $scope.$state = $state
+        $scope.$watch('$state.$current.locals.globals.injury', (injury) ->
+          $scope.injury = injury
+          console.log($scope.injury)
+        )
+        $scope.revision_templates = {
+          create: '/templates/revisions/create.tmpl',
+          update: '/templates/revisions/update.tmpl'
+        };
       ),
       resolve: {
         action: (() ->  
-          'Update'
+          'update'
         ),
         injury: (Injury, $stateParams) ->
           Injury.get($stateParams.id)

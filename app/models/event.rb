@@ -4,6 +4,7 @@ class Event
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::History::Trackable
+  include ActiveModel::ForbiddenAttributesProtection
 
   paginates_per 100
 
@@ -15,9 +16,6 @@ class Event
                   :track_update   =>  true,
                   :track_destroy  =>  true
 
-  def revisions
-    HistoryTracker.where(:association_chain.elem_match => {id: id})
-  end
 end
 
 class Fixture < Event
@@ -44,15 +42,17 @@ class Fixture < Event
 end
 
 class Injury < Event
+  attr_accessible :status, :source, :quote, :return_date, :player
   belongs_to :player
 
   field :source, type: String
   field :quote, type: String
   field :return_date, type: Date
+  field :status, type: String
 
   validate :return_date_cannot_be_in_the_past
   validate :source_must_be_url_if_present
-  validates :player, :presence => true
+  validates :status, :inclusion => { :in => %w[doubt confirmed recovered] }
 
   def source_must_be_url_if_present
     if source.present? && source !~ /^(http|https)/
@@ -65,16 +65,6 @@ class Injury < Event
       errors.add(:return_date, "can't be in the past")
     end
   end
-end
-
-class Doubt < Injury
-  field :certainty, type: Integer
-end
-
-class Confirmed < Injury
-end
-
-class Recovered < Injury
 end
 
 class Transfer < Event

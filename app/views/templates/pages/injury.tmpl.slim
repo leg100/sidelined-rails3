@@ -1,6 +1,6 @@
 .row
   .col-xs-3.injury-form-container
-    = render 'partials/injury_form'
+    = render 'partials/edit_injury_form'
   .col-xs-9.injury-container
     .row
       .col-xs-8.alert-container(ng-controller="AlertCtrl")
@@ -11,7 +11,7 @@
         dl.dl-horizontal
           dt Status 
           dd 
-            | {{injury._type}}
+            | {{injury.status|capitalize}}
           dt Player 
           dd 
             | {{injury.player.longName}}
@@ -27,3 +27,12 @@
           dt Last update
           dd 
             | {{injury.updatedAt|date:'MMM d, y h:mm:ss a'}}
+    .row
+      .col-xs-12
+        h4 Revisions
+        .row ng-repeat="revision in injury.revisions"
+          ng-include(src="revision_templates[revision.action]")
+    .row
+      .col-xs-12
+        pre
+          | {{injury.revisions|json}}

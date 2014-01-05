@@ -1,12 +1,12 @@
 .row
   .col-xs-3.injuries-form-container
-    = render 'partials/injury_form'
+    = render 'partials/add_injury_form'
   .col-xs-9.injuries-container
     .row
       .col-xs-8.alert-container(ng-controller="AlertCtrl")
         alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)" {{alert.msg}}
     .row
-      div(ng-repeat="injury in injuries" ng-controller="InjuryCtrl")
+      div(ng-repeat="injury in injuries")
         ng-include(src="injury.templateUrl")
     .row
       pagination total-items="totalItems" page="currentPage" max-size="maxSize" on-select-page="goToPage(page)" items-per-page="itemsPerPage"
