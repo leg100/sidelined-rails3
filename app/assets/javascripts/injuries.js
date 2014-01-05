@@ -1,6 +1,6 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-angular.module('injuries', ['rails', 'ui.bootstrap', 'alerts', 'players'])
+angular.module('injuries', ['rails', 'ui.bootstrap', 'alerts', 'players', 'utils'])
 .factory('InjuryListingService', ['$rootScope', function($rootScope) {
   var injuryListingService = {};
   injuryListingService.broadcastItem = function() {
