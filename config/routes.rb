@@ -25,7 +25,6 @@ SidelinedRails3::Application.routes.draw do
     end
   end
 
-  get '/templates/:path' => 'templates#template', :constraints => { :path => /.+/  }
   resource :angular_root, :only => [:show]
 
   devise_for :user
