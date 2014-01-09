@@ -31,11 +31,12 @@ SidelinedRails3::Application.routes.draw do
     end
   end
 
-  # resource :angular_root, :only => [:show]
-
   devise_for :user
 
+  match "api" => proc { [404, {}, ['Invalid API endpoint']] }
+  match "api/*path" => proc { [404, {}, ['Invalid API endpoint']] }
+
   # send everything else to angular app
-  # match '*pages' => 'angular_root#show'
-  # root to: 'angular_root#show'
+  resource :angular_root, :only => [:show]
+  match '*pages' => 'angular_root#show'
 end

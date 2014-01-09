@@ -1,9 +1,0 @@
-= form_for @fixture do |f|
-  - if @fixture.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@fixture.errors.count, "error")} prohibited this fixture from being saved:"
-      ul
-        - @fixture.errors.full_messages.each do |message|
-          li = message
-
-  .actions = f.submit 'Save'
