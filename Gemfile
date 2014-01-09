@@ -8,6 +8,7 @@ gem 'mongoid_slug'
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 gem 'kaminari'
 gem 'strong_parameters'
+gem 'httparty'
 
 group :development, :test do
   gem "rspec-rails"
@@ -17,7 +18,6 @@ end
 
 group :development do
   gem 'wirble'
-  gem 'httparty'
 end
 
 group :test do
