@@ -1,5 +1,10 @@
 class User
   include Mongoid::Document
+
+  has_many :events
+  validates_uniqueness_of :username
+  # email validation is provided by devise
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

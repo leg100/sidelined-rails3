@@ -23,17 +23,19 @@ SidelinedRails3::Application.routes.draw do
     resources :history_trackers
    
     devise_scope :user do
+      get '/check-availability' => 'users/sessions#check_availability'
       get '/current-user' => 'users/sessions#get_current_user'
       post '/login' => 'users/sessions#create'
       post '/logout' => 'users/sessions#destroy'
+      post '/signup' => 'users/registrations#create'
     end
   end
 
-  resource :angular_root, :only => [:show]
+  # resource :angular_root, :only => [:show]
 
   devise_for :user
 
   # send everything else to angular app
-  match '*pages' => 'angular_root#show'
-  root to: 'angular_root#show'
+  # match '*pages' => 'angular_root#show'
+  # root to: 'angular_root#show'
 end
