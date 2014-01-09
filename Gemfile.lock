@@ -226,9 +226,6 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.38)
-    uglifier (2.3.2)
-      execjs (>= 0.3.0)
-      json (>= 1.8.0)
     warden (1.2.3)
       rack (>= 1.0)
     websocket (1.0.7)
@@ -262,5 +259,4 @@ DEPENDENCIES
   selenium-webdriver
   slim-rails
   strong_parameters
-  uglifier
   wirble
