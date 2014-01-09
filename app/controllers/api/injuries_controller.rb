@@ -1,5 +1,5 @@
 class Api::InjuriesController < ApplicationController
-  before_filter :authenticate_user!, :only => [:create, :update, :destroy]
+  before_filter :authenticate_user!, :only => [:create, :update, :destroy, :revert]
 
   def create
     @injury = Injury.new(injury_params)
@@ -12,6 +12,33 @@ class Api::InjuriesController < ApplicationController
       else
         format.json { render json: @injury.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  # POST /api/injuries/:id/revert
+  # data: {version: old_version}
+  def revert
+    params.require(:injury).permit(:version)
+    @injury = Injury.find(params[:id])
+    revert_to_version = params[:injury][:version] + 1
+
+    begin
+      @injury.undo!(
+        current_user, {
+        from: @injury.version,
+        to: revert_to_version
+      })
+    rescue Mongoid::Errors::Validations
+      return render json: {
+        info: "Cannot revert; version #{@injury.version} has a different schema",
+      }, status: :unprocessable_entity
+    rescue Exception => e
+      return render json: {
+        info: "Unknown error occurred",
+        err: e.message
+      }, status: :unprocessable_entity
+    else
+      return render json: @injury, status: 200
     end
   end
 

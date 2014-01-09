@@ -10,7 +10,7 @@ class Event
 
   track_history   :on => :all,
                   :modifier_field => :modifier,
-                  :modifier_field_inverse_of => :nil,
+                  :modifier_field_inverse_of => :events,
                   :version_field => :version,
                   :track_create   =>  true,
                   :track_update   =>  true,
@@ -42,7 +42,7 @@ class Fixture < Event
 end
 
 class Injury < Event
-  attr_accessible :status, :source, :quote, :return_date, :player
+  attr_accessible :status, :source, :quote, :return_date, :player, :modifier
   belongs_to :player
 
   field :source, type: String

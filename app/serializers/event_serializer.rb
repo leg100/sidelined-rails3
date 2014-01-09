@@ -1,11 +1,11 @@
 class EventSerializer < ActiveModel::Serializer
   attributes :id, :version, :_type, :template_url, :edit_template_url, :updated_at
   has_one :modifier
-  has_many :revisions
+  has_many :revisions, serializer: HistoryTrackerSerializer
 
   def revisions
-    HistoryTracker.where(:association_chain.elem_match => {id: id})
-      .includes(:modifier).desc(:version)
+    HistoryTracker.includes(:modifier).where(:association_chain.elem_match => {id: id})
+      .desc(:version)
   end
 
   def template_url
