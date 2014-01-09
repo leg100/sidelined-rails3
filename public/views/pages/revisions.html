@@ -1,0 +1,22 @@
+<div class="row">
+  <div ng-controller="RevisionListCtrl" class="col-md-12">
+    <div class="row">
+      <pagination total-items="totalItems" page="currentPage" max-size="maxSize" on-select-page="goToPage(page)" items-per-page="itemsPerPage"></pagination>
+    </div>
+    <div ng-repeat="revision in revisions" ng-controller="RevisionCtrl">
+      <div class="row">
+        <div class="col-md-1">{{revision.version}} </div>
+        <div class="col-md-1">{{revision.action}} </div>
+        <div class="col-md-1">{{revision.modifier.username}} </div>
+        <div class="col-md-1">{{revision.associationChain[0].name}} </div>
+        <div class="col-md-3">
+          <pre>{{revision.original|json}}</pre>
+        </div>
+        <div class="col-md-3">
+          <pre>{{revision.modified|json}}</pre>
+        </div>
+        <div class="col-md-2">{{revision.updatedAt|date:format}}</div>
+      </div>
+    </div>
+  </div>
+</div>

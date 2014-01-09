@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-xs-3 injuries-form-container">
+    <form novalidate="novalidate" name="form" ng-controller="InjuryAddCtrl">
+      <div class="form-group">
+        <select ng-model="injury.status" required="required" class="form-control">
+          <option value="confirmed" ng-selected="injury.status=='confirmed'">Confirmed</option>
+          <option value="doubt" ng-selected="injury.status=='doubt'">Doubt</option>
+          <option value="recovered" ng-selected="injury.status=='recovered'">Recovered</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <input name="player" autofocus="autofocus" type="text" ng-model="injury.player" typeahead="player as player.tickerAndName for player in getPlayers($viewValue)" placeholder="Player" ng-required="true" ng-disabled="disabled()" class="form-control">
+      </div>
+      <div class="form-group">
+        <input type="text" datepicker-popup="{{format}}" ng-model="injury.returnDate" is-open="opened" min="minDate" max="'2015-06-22'" datepicker-options="dateOptions" close-text="Close" placeholder="Return date" class="form-control">
+      </div>
+      <div class="form-group">
+        <textarea rows="3" ng-model="injury.quote" placeholder="Quote" class="form-control"></textarea>
+      </div>
+      <div class="form-group">
+        <input type="text" ng-model="injury.source" placeholder="News source" class="form-control">
+      </div>
+      <div class="form-group">
+        <button ng-click="add()" ng-disabled="!canSave()" class="btn btn-primary">Add {{type}}</button>
+      </div>
+    </form>
+  </div>
+  <div class="col-xs-9 injuries-container">
+    <div class="row">
+      <div ng-controller="AlertCtrl" class="col-xs-8 alert-container">
+        <alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)">{{alert.msg}}</alert>
+      </div>
+    </div>
+    <div class="row">
+      <div ng-repeat="injury in injuries">
+        <ng-include src="injury.templateUrl"></ng-include>
+      </div>
+    </div>
+    <div class="row">
+      <pagination total-items="totalItems" page="currentPage" max-size="maxSize" on-select-page="goToPage(page)" items-per-page="itemsPerPage"></pagination>
+    </div>
+  </div>
+</div>

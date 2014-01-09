@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-xs-12 widget">
+    <div class="row">
+      <div class="col-xs-2 margin">
+        <div class="row">
+          <div class="col-xs-8 col-xs-push-4 team-colors text-right">
+            <div class="row">
+              <div class="col-xs-12 ticker">
+                <h4>{{injury.player.shortName}}</h4>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 player-name">
+                <h5><i><small>{{injury.player.longName}} </small></i></h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-10 col-xs-offset-2 event">
+        <div class="row">
+          <div class="col-xs-10"><span class="h4 injury"><span>Injury:</span><span class="status">{{injury.status|capitalize}}</span></span><span class="h4 out"><i class="small">Out for 9 more days</i></span></div>
+          <div class="col-xs-2 text-right h4 ago"><small>{{injury.updatedAt|ago}}</small></div>
+        </div>
+        <div class="row quote"><span>{{injury.quote}}</span><span class="detail-link"><a ui-sref="injury({id: injury.id})">Detail</a></span></div>
+        <div class="row">
+          <div class="col-xs-5 col-xs-push-7 text-right"><span class="h5 small">Posted by {{injury.modifier.username}}</span>
+            <button ng-click="updateInjury()" class="btn btn-primary btn-xs micro-button">Update</button>
+            <button ng-click="removeInjury($index)" class="btn btn-xs btn-danger micro-button">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
