@@ -36,7 +36,9 @@ SidelinedRails3::Application.routes.draw do
   match "api" => proc { [404, {}, ['Invalid API endpoint']] }
   match "api/*path" => proc { [404, {}, ['Invalid API endpoint']] }
 
-  # send everything else to angular app
+  # send paths handled by ui-router to angular app
   resource :angular_root, :only => [:show]
-  match '*pages' => 'angular_root#show'
+  match 'injuries/*ids' => 'angular_root#show'
+  root to: 'angular_root#show'
+
 end
