@@ -10,7 +10,7 @@ class Api::InjuriesController < ApplicationController
       if @injury.save
         format.json { render json: @injury, status: :created}
       else
-        format.json { render json: @injury.errors, status: :unprocessable_entity }
+        format.json { render json: @injury.errors.full_messages, status: :unprocessable_entity }
       end
     end
   end
@@ -49,7 +49,7 @@ class Api::InjuriesController < ApplicationController
       if @injury.update_attributes(injury_params)
         format.json { head :no_content }
       else
-        format.json { render json: @injury.errors, status: :unprocessable_entity }
+        format.json { render json: @injury.errors.full_messages, status: :unprocessable_entity }
       end
     end
   end
