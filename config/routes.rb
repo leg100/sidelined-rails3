@@ -38,7 +38,9 @@ SidelinedRails3::Application.routes.draw do
 
   # send paths handled by ui-router to angular app
   resource :angular_root, :only => [:show]
+  match 'injuries' => 'angular_root#show'
   match 'injuries/*ids' => 'angular_root#show'
   root to: 'angular_root#show'
 
+  # the rest receive a 404.html
 end
