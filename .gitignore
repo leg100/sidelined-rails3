@@ -21,3 +21,6 @@
 
 # Editor/IDE crap
 *.swp
+
+# public is angular's domain; rails is only an API
+/public
