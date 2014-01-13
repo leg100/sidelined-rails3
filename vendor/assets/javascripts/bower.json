@@ -1,7 +1,0 @@
-{
-  "name": "dsl-generated dependencies",
-  "dependencies": {
-    "angular-http-auth": "latest",
-    "angular-ui-router": "latest"
-  }
-}
