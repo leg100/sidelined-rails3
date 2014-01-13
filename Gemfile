@@ -19,6 +19,9 @@ end
 
 group :development do
   gem 'wirble'
+  gem "capistrano"
+  gem "capistrano-bundler"
+  gem "capistrano-rbenv"
 end
 
 group :test do
