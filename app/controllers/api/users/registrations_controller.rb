@@ -7,25 +7,14 @@ class Api::Users::RegistrationsController < Devise::RegistrationsController
     build_resource(user_params)
 
     if resource.save
-      sign_in(:user, resource)
-
       return render status: 200, json: {
-        success: true,
         info: 'Signed up',
         data: resource
       }
     else 
-      return failure(resource.errors)
+      return render status: 422,
+        json: resource.errors.full_messages
     end
-  end
-
-  def failure(errors='')
-    return render status: 200,
-      json: {
-        success: false, 
-        info: 'Login Failed',
-        data: errors
-      }
   end
 
 private
