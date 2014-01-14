@@ -86,6 +86,6 @@ private
   # since you'll be able to reuse the same permit list between create and update. Also, you
   # can specialize this method with per-user checking of permissible attributes.
   def injury_params
-    params.require(:injury).permit(:source, :quote, :return_date, :player, :status)
+    params.require(:injury).permit(:source, :quote, :return_date, :status, :player_id)
   end
 end
