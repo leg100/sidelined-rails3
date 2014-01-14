@@ -37,17 +37,18 @@ class Api::FixturesController < ApplicationController
     @fixture = Fixture.find(params[:id])
   end
 
-  # POST /fixtures
   # POST /fixtures.json
   def create
-    # workaround for https://github.com/aq1018/mongoid-history/issues/26
-    @fixture = Fixture.new(params[:fixture].merge(modifier: current_user))
+    @fixture = Fixture.new(fixture_params)
 
+    # workaround for https://github.com/aq1018/mongoid-history/issues/26
+    @fixture.modifier = current_user
+    
     respond_to do |format|
       if @fixture.save
-        format.json { render json: @fixture, status: :created, location: @fixture }
+        return render json: @fixture, status: :created
       else
-        format.json { render json: @fixture.errors, status: :unprocessable_entity }
+        return render json: @fixture.errors.full_messages, status: :unprocessable_entity
       end
     end
   end
@@ -58,7 +59,7 @@ class Api::FixturesController < ApplicationController
     @fixture = Fixture.find(params[:id])
 
     respond_to do |format|
-      if @fixture.update_attributes(params[:fixture])
+      if @fixture.update_attributes(fixture_params)
         format.json { head :no_content }
       else
         format.json { render json: @fixture.errors, status: :unprocessable_entity }
@@ -75,5 +76,13 @@ class Api::FixturesController < ApplicationController
     respond_to do |format|
       format.json { head :no_content }
     end
+  end
+
+private
+  # Using a private method to encapsulate the permissible parameters is just a good pattern
+  # since you'll be able to reuse the same permit list between create and update. Also, you
+  # can specialize this method with per-user checking of permissible attributes.
+  def fixture_params
+    params.require(:fixture).permit(:datetime, :home_club_id, :away_club_id)
   end
 end

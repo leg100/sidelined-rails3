@@ -25,7 +25,9 @@ class Fixture < Event
   field :datetime, type: DateTime
 
   validates_presence_of :home_club
+  validates_associated :home_club
   validates_presence_of :away_club
+  validates_associated :away_club
   validates_presence_of :datetime
   validates_uniqueness_of :home_club, :scope => :away_club
   validate :club_cannot_play_itself
