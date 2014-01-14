@@ -8,7 +8,6 @@ class Api::FixturesController < ApplicationController
     @fixtures = Fixture.all
 
     respond_to do |format|
-      format.html # index.html.erb
       format.json { render json: @fixtures }
     end
   end
@@ -19,7 +18,6 @@ class Api::FixturesController < ApplicationController
     @fixture = Fixture.find(params[:id])
 
     respond_to do |format|
-      format.html # show.html.erb
       format.json { render json: @fixture }
     end
   end
@@ -30,7 +28,6 @@ class Api::FixturesController < ApplicationController
     @fixture = Fixture.new
 
     respond_to do |format|
-      format.html # new.html.erb
       format.json { render json: @fixture }
     end
   end
@@ -48,10 +45,8 @@ class Api::FixturesController < ApplicationController
 
     respond_to do |format|
       if @fixture.save
-        format.html { redirect_to @fixture, notice: 'Fixture was successfully created.' }
         format.json { render json: @fixture, status: :created, location: @fixture }
       else
-        format.html { render action: "new" }
         format.json { render json: @fixture.errors, status: :unprocessable_entity }
       end
     end
@@ -64,10 +59,8 @@ class Api::FixturesController < ApplicationController
 
     respond_to do |format|
       if @fixture.update_attributes(params[:fixture])
-        format.html { redirect_to @fixture, notice: 'Fixture was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
         format.json { render json: @fixture.errors, status: :unprocessable_entity }
       end
     end
@@ -80,7 +73,6 @@ class Api::FixturesController < ApplicationController
     @fixture.destroy
 
     respond_to do |format|
-      format.html { redirect_to fixtures_url }
       format.json { head :no_content }
     end
   end
