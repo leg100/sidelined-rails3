@@ -5,6 +5,7 @@ FactoryGirl.define do
     email { Faker::Internet.email }
     password { Faker::Internet.password(8) }
     password_confirmation { password }
+    confirmed_at { Date.yesterday }
 
     factory :admin do
       admin true

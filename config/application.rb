@@ -69,7 +69,6 @@ module SidelinedRails3
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: true,
@@ -80,5 +79,7 @@ module SidelinedRails3
         request_specs: false
       g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
+
+    config.action_mailer.delivery_method = :sendmail
   end
 end

@@ -42,7 +42,11 @@ class Api::Users::SessionsController < Devise::SessionsController
   end
 
   def get_current_user
-    render json: current_user
+    if current_user and current_user.confirmed?
+      render json: current_user
+    else
+      render json: nil
+    end
   end
 
   def failure
