@@ -44,7 +44,6 @@ class Fixture < Event
 end
 
 class Injury < Event
-  attr_accessible :status, :source, :quote, :return_date, :player, :modifier
   belongs_to :player
 
   field :source, type: String
