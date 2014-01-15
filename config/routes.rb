@@ -21,6 +21,8 @@ SidelinedRails3::Application.routes.draw do
     end
     resources :fixtures
     resources :history_trackers
+
+    post 'help/send_message' => 'help#send_message'
    
     devise_scope :user do
       get 'check-availability' => 'users/sessions#check_availability'
@@ -48,6 +50,7 @@ SidelinedRails3::Application.routes.draw do
   match 'injuries/*ids' => 'angular_root#show'
   match 'signup' => 'angular_root#show'
   match 'confirmed' => 'angular_root#show'
+  match 'help' => 'angular_root#show'
   root to: 'angular_root#show'
 
   # the rest receive a 404.html
