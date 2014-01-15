@@ -23,6 +23,5 @@ feature 'User management' do
     current_email.default_part_body.to_s.should include('Confirm my account')
     visit_in_email('Confirm my account')
     URI.parse(current_url).request_uri == '/confirmed?status=successful'
-#    page.should have_content "Successfully confirmed your signup"
   end
 end
