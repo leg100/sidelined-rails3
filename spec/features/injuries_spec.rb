@@ -19,6 +19,8 @@ feature 'Injury management' do
         page.should have_selector(selector)
         page.execute_script("$(\"#{selector}\").mouseenter().click()")
         page.should have_field('player_typeahead', :with => @ticker_and_long_name)
+
+        fill_in 'player_body_part', :with => 'Calf'
         click_button 'Add'
       end
       sleep 1

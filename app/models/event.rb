@@ -50,6 +50,7 @@ class Injury < Event
   field :quote, type: String
   field :return_date, type: Date
   field :status, type: String
+  field :body_part, type: String
 
   validate :return_date_cannot_be_in_the_past
   validate :source_must_be_url_if_present
