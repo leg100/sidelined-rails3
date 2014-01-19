@@ -14,7 +14,17 @@ class Api::InjuriesController < ApplicationController
       end
     end
   end
+  # GET /api/injuries/current?player_id=:player_id
+  def current
+    @player = Player.find(params[:player_id])
 
+    if @player.injured?
+      render json: @player.current_injury, status: :ok
+    else
+      render json: false, status: :not_found
+    end
+  end
+  #
   # POST /api/injuries/:id/revert
   # data: {version: old_version}
   def revert

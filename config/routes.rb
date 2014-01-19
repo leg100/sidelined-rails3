@@ -14,6 +14,8 @@ SidelinedRails3::Application.routes.draw do
     end
     resources :clubs
     resources :events
+
+    get '/injuries/current'
     resources :injuries do
       member do
         post :revert

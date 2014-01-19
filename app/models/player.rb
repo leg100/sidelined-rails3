@@ -5,6 +5,16 @@ class Player
   include Mongoid::Slug
 
   belongs_to :club
+  has_many :injuries
+
+  def injured?
+    injuries.ne({status: 'recovered'}).exists?
+  end
+
+  def current_injury
+    injuries.ne({status: 'recovered'}).desc(:updated_at).first
+  end
+
   accepts_nested_attributes_for :club
 
   track_history   :on => :all,
