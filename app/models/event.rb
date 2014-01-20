@@ -54,7 +54,7 @@ class Injury < Event
 
   validate :return_date_cannot_be_in_the_past
   validate :source_must_be_url_if_present
-  validates :status, :inclusion => { :in => %w[doubt confirmed recovered] }
+  validates :status, :inclusion => { :in => %w[doubtful injured recovered] }
   validates_presence_of :player
   validates_associated :player
 
