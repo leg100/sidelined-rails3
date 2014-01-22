@@ -7,4 +7,8 @@ module FeatureMacros
     fill_in 'password', with: user.password
     click_button 'Sign in'
   end
+
+  def get_ticker_and_long_name(player)
+    return "#{player.short_name} #{player.long_name}"
+  end
 end
