@@ -57,7 +57,7 @@ class Api::InjuriesController < ApplicationController
 
     respond_to do |format|
       if @injury.update_attributes(injury_params)
-        format.json { head :no_content }
+        format.json { render json: @injury, status: :ok }
       else
         format.json { render json: @injury.errors.full_messages, status: :unprocessable_entity }
       end
