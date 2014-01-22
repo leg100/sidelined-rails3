@@ -6,8 +6,6 @@ class Event
   include Mongoid::History::Trackable
   include ActiveModel::ForbiddenAttributesProtection
 
-  paginates_per 100
-
   track_history   :on => :all,
                   :modifier_field => :modifier,
                   :modifier_field_inverse_of => :events,
