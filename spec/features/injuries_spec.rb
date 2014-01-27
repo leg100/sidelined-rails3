@@ -24,6 +24,8 @@ feature 'Injury management' do
       end
       sleep 1
     }.to change(Injury, :count).by(1)
+
+    expect(page.current_path).to eq("/injuries/#{Injury.last.id}")
   end
 
   scenario "edit injury", js: true do
