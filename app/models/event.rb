@@ -63,7 +63,8 @@ class Injury < Event
   end
 
   def return_date_cannot_be_in_the_past
-    if return_date.present? && return_date < Date.today
+    if status != 'recovered' && return_date.present? &&
+      return_date < Date.today
       errors.add(:return_date, "can't be in the past")
     end
   end
