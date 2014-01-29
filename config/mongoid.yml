@@ -6,7 +6,8 @@ production:
          - ds057538.mongolab.com:57538
        username: heroku_app20274207
        password: aea40r5n0e9rik6d6opnmccppv
-       options:
+  options:
+    identity_map_enabled: true
 development:
   # Configure available database sessions. (required)
   sessions:
@@ -68,7 +69,7 @@ development:
     # allow_dynamic_fields: true
 
     # Enable the identity map, needed for eager loading. (default: false)
-    # identity_map_enabled: false
+    identity_map_enabled: true
 
     # Includes the root model name in json serialization. (default: false)
     # include_root_in_json: false
@@ -112,3 +113,5 @@ test:
         # low amounts for fast failures.
         max_retries: 1
         retry_interval: 0
+  options:
+    identity_map_enabled: true
