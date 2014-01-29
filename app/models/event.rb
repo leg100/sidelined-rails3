@@ -14,6 +14,8 @@ class Event
                   :track_update   =>  true,
                   :track_destroy  =>  true
 
+  belongs_to :player
+
 end
 
 class Fixture < Event
@@ -42,8 +44,6 @@ class Fixture < Event
 end
 
 class Injury < Event
-  belongs_to :player
-
   field :source, type: String
   field :quote, type: String
   field :return_date, type: Date

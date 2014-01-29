@@ -88,14 +88,15 @@ class Api::InjuriesController < ApplicationController
       Injury.all
     end
   
-    @injuries = query.includes(:modifier).desc(:updated_at)
+    @injuries = query.includes(:modifier, :player).desc(:updated_at)
       .page(page).per(per_page)
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { 
         render json: @injuries,
-          meta: {total: @injuries.length }
+          meta: {total: @injuries.length },
+          each_serializer: InjuryArraySerializer
       }
     end
   end

@@ -38,10 +38,6 @@ class Player
   validates_presence_of :long_name
   validates :long_name, :uniqueness => {:case_sensitive => false}
 
-  def as_json(options={})
-    super(options.merge(:include => [:club]))
-  end
-
   def self.generate_ticker(name)
     ::Sidelined::PlayerName.new(name).trkref
   end
