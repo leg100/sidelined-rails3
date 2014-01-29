@@ -80,7 +80,15 @@ class Api::InjuriesController < ApplicationController
   def index
     page = params[:page] || 1
     per_page = params[:per_page] || 10
-    @injuries = Injury.includes(:modifier).desc(:updated_at)
+
+    query = if params.key?(:statuses) 
+      statuses = params[:statuses].split('|')
+      Injury.in(status: statuses)
+    else 
+      Injury.all
+    end
+  
+    @injuries = query.includes(:modifier).desc(:updated_at)
       .page(page).per(per_page)
 
     respond_to do |format|

@@ -6,6 +6,18 @@ feature 'Injury management' do
     @player = create(:player)
   end
 
+  scenario "list injuries using filters", js: true do
+    injury1 = create(:injury, status: 'injured')
+    injury2 = create(:injury, status: 'doubtful')
+    injury3 = create(:injury, status: 'recovered')
+
+    visit "/injuries"
+    page.should have_css("div.widget", :count => 2) 
+  
+    find("input[ng-model='filters.recovered']").set(true)
+    page.should have_css("div.widget", :count => 3) 
+  end
+
   scenario "add confirmed injury", js: true do
     expect {
       visit "/injuries/new"
