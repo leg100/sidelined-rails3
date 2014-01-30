@@ -22,6 +22,7 @@ feature 'User management' do
     open_email('newuser@example.com')
     current_email.default_part_body.to_s.should include('Confirm my account')
     visit_in_email('Confirm my account')
-    URI.parse(current_url).request_uri == '/confirmed?status=successful'
+    expect(URI.parse(current_url).request_uri).to eq('/confirmed?status=success')
+    page.should have_content "Successfully confirmed your signup"
   end
 end

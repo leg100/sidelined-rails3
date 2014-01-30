@@ -14,9 +14,13 @@ class Api::Users::ConfirmationsController < Devise::ConfirmationsController
     self.resource = resource_class.confirm_by_token(params[:confirmation_token])
 
     if resource.errors.empty?
-      redirect_to '/confirmed?status=successful'
+      redirect_to '/confirmed?status=success'
     else
-      redirect_to '/confirmed?status=failure'
+      if resource.errors.full_messages.length > 0
+        redirect_to "/confirmed?status=failure&errors=#{resource.errors.full_messages}"
+      else
+        redirect_to "/confirmed?status=failure"
+      end
     end
   end
 end

@@ -80,6 +80,17 @@ module SidelinedRails3
       g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
 
-    config.action_mailer.delivery_method = :sendmail
+    config.action_mailer.raise_delivery_errors = true
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.smtp_settings = {
+      :address              => 'smtp.gmail.com',
+      :port                 => 587,
+      :domain               => 'sidelined.io',
+      :user_name            => 'louisgarman@sidelined.io',
+      :authentication       => 'plain',
+      :enable_starttls_auto => true,
+      :password             => 'j843874q'
+    }
   end
 end

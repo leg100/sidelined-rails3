@@ -4,8 +4,8 @@ class HelpMailer < ActionMailer::Base
     @from = help[:email]
     @message = help[:message]
     mail(
-      :from => 'louisgarman@gmail.com',
-      :to => 'louisgarman@gmail.com', 
+      :from => 'support@sidelined.io',
+      :to => 'support@sidelined.io', 
       :subject => 'help request from sidelined user')
   end
 end
