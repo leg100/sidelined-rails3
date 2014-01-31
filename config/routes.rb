@@ -11,6 +11,9 @@ SidelinedRails3::Application.routes.draw do
         get :tickergen
         post :search
       end
+      member do
+        post :revert
+      end
     end
     resources :clubs
     resources :events
@@ -48,6 +51,8 @@ SidelinedRails3::Application.routes.draw do
 
   # send paths handled by ui-router to angular app
   resource :angular_root, :only => [:show]
+  match 'players' => 'angular_root#show'
+  match 'players/*ids' => 'angular_root#show'
   match 'injuries' => 'angular_root#show'
   match 'injuries/*ids' => 'angular_root#show'
   match 'signup' => 'angular_root#show'

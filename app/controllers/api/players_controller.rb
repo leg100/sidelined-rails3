@@ -1,5 +1,5 @@
 class Api::PlayersController < ApplicationController
-  before_filter :authenticate_user!, :only => [:new, :edit, :create, :destroy]
+  before_filter :authenticate_user!, :only => [:new, :edit, :create, :destroy, :revert]
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
   
   # GET /players/new
@@ -16,7 +16,7 @@ class Api::PlayersController < ApplicationController
   # POST /players.json
   def create
     # workaround for https://github.com/aq1018/mongoid-history/issues/26
-    @player = Player.new(params[:player].merge(modifier: current_user))
+    @player = Player.new(player_params.merge(modifier: current_user))
     logger.debug(@player)
 
     respond_to do |format|
@@ -34,7 +34,7 @@ class Api::PlayersController < ApplicationController
     @player = Player.find(params[:id])
 
     respond_to do |format|
-      if @player.update_attributes(params[:player])
+      if @player.update_attributes(player_params)
         format.json { head :no_content }
       else
         format.json { render json: @player.errors, status: :unprocessable_entity }
@@ -52,12 +52,47 @@ class Api::PlayersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  #
+  #
+  # POST /api/players/:id/revert
+  # data: {version: <old_version>}
+  def revert
+    params.require(:player).permit(:version)
+    revert_to_version = params[:player][:version] + 1
+
+    @player = Player.find(params[:id])
+
+    begin
+      @player.undo!(
+        current_user, {
+        from: @player.version,
+        to: revert_to_version
+      })
+    rescue Mongoid::Errors::Validations
+      return render json: {
+        info: "Cannot revert; version #{@player.version} has a different schema",
+      }, status: :unprocessable_entity
+    rescue Exception => e
+      return render json: {
+        info: "Unknown error occurred",
+        err: e.message
+      }, status: :unprocessable_entity
+    else
+      return render json: @player, status: 200
+    end
+  end
 
   def index
     if params[:typeahead]
       render :json => Player.all, each_serializer: PlayerTypeaheadSerializer 
     else
-      render :json => Player.all
+      page = params[:page] || 1
+      per_page = params[:per_page] || 10
+      
+      @players = Player.all.page(page).per(per_page)
+
+      render :json => @players,
+        meta: {total: @players.length}
     end
   end
 
@@ -120,5 +155,11 @@ private
  def player_not_found
     flash[:alert] = "Cannot find player"
     redirect_to :back
+  end
+  # Using a private method to encapsulate the permissible parameters is just a good pattern
+  # since you'll be able to reuse the same permit list between create and update. Also, you
+  # can specialize this method with per-user checking of permissible attributes.
+  def player_params
+    params.require(:player).permit(:long_name, :short_name, :club_id)
   end
 end
