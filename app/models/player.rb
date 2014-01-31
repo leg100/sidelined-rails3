@@ -34,7 +34,7 @@ class Player
   field :wiki_team, type: String
   slug :long_name, history: true
 
-  validates_length_of :short_name, minimum: 2, maximum: 4
+  validates_length_of :short_name, minimum: 2, maximum: 5
   validates_presence_of :long_name
   validates :long_name, :uniqueness => {:case_sensitive => false}
 
