@@ -28,9 +28,10 @@ SidelinedRails3::Application.routes.draw do
     resources :history_trackers
 
     post 'help/send_message' => 'help#send_message'
+
+    get 'check-availability' => 'unique#check_availability'
    
     devise_scope :user do
-      get 'check-availability' => 'users/sessions#check_availability'
       get 'current-user' => 'users/sessions#get_current_user'
 
       post 'users/sign_up' => 'users/registrations#create'

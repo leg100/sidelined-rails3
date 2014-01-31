@@ -5,15 +5,6 @@ class Api::Users::SessionsController < Devise::SessionsController
   respond_to :json
   prepend_before_filter :require_no_authentication, :only => [ :new ]
 
-  def check_availability
-    query = { params[:name] => params[:value] }
-    if User.where(query).count == 0
-      return render status: 200, json: { success: true, info: 'available' } 
-    else
-      return render status: 409, json: { success: false, info: "#{params[:name]} taken." }
-    end
-  end
-
   def create
     resource = User.find_for_database_authentication(
       login: params[:user][:login]
