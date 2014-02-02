@@ -56,7 +56,7 @@ class Api::InjuriesController < ApplicationController
     @injury = Injury.find(params[:id])
 
     respond_to do |format|
-      if @injury.update_attributes(injury_params)
+      if @injury.update_attributes(injury_params.merge(modifier: current_user))
         format.json { render json: @injury, status: :ok }
       else
         format.json { render json: @injury.errors.full_messages, status: :unprocessable_entity }

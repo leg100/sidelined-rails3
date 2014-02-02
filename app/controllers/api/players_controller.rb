@@ -34,7 +34,7 @@ class Api::PlayersController < ApplicationController
     @player = Player.find(params[:id])
 
     respond_to do |format|
-      if @player.update_attributes(player_params)
+      if @player.update_attributes(player_params.merge(modifier: current_user))
         format.json { head :no_content }
       else
         format.json { render json: @player.errors, status: :unprocessable_entity }
