@@ -1,5 +1,5 @@
 class Api::PlayersController < ApplicationController
-  before_filter :authenticate_user!, :only => [:new, :edit, :create, :destroy, :revert]
+  before_filter :authenticate_user!, :only => [:new, :update, :create, :destroy, :revert]
   skip_before_filter :verify_authenticity_token, :if => Proc.new { |c| c.request.format == 'application/json' }
   
   # GET /players/new
